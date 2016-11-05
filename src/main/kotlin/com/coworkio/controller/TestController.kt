@@ -1,4 +1,4 @@
-package com.teamtracker.controller
+package com.coworkio.controller
 
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
