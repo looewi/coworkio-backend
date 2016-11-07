@@ -3,13 +3,10 @@ package com.coworkio.entity.domain
 import org.springframework.data.mongodb.core.mapping.Field
 
 data class Position (
-        var title: String,
-        var description: String?,
+        var positionInfo: PositionInfo,
 
         @Field(value = "required_skills")
         var requiredSkillRequirements: List<SkillRequirement>?,
-
-        var type: PositionType = PositionType.OTHER,
 
         @Field(value = "employee_id")
         var employeeId: String?,
