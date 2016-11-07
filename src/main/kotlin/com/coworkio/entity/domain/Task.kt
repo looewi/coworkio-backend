@@ -35,6 +35,7 @@ data class Task(
         var estimate: Double?,
         var priority: Priority = Priority.NORMAL,
         var tags: List<String>?,
+        var status: Int = 0,
 
         @Field(value = "sprint_id")
         var sprintId: String?,
