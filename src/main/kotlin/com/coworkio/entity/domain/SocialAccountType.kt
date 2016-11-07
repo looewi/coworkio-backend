@@ -1,6 +1,6 @@
 package com.coworkio.entity.domain
 
-enum class SocialAccountType(var value: String) {
+enum class SocialAccountType(val value: String) {
     VK("vk"),
     FACEBOOK("facebook"),
     TWITTER("twitter"),

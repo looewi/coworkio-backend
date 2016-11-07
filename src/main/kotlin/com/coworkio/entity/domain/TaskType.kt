@@ -1,6 +1,6 @@
 package com.coworkio.entity.domain
 
-enum class TaskType(var value: String) {
+enum class TaskType(val value: String) {
     DEVELOPMENT("development"),
     BUG("big"),
     COSMETICS("cosmetics"),

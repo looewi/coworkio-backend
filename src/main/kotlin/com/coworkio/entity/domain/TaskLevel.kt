@@ -1,6 +1,6 @@
 package com.coworkio.entity.domain
 
-enum class TaskLevel(var level: Int, var value: String) {
+enum class TaskLevel(val level: Int, val value: String) {
     EPIC(0, "epic"),
     USER_STORY(1, "user story"),
     TASK(2, "task");
