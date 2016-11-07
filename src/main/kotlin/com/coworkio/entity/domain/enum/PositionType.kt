@@ -1,4 +1,4 @@
-package com.coworkio.entity.domain
+package com.coworkio.entity.domain.enum
 
 enum class PositionType(val value: String) {
     FULLSTACK("full-stack developer"),

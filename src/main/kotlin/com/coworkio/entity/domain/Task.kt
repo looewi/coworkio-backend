@@ -1,5 +1,8 @@
 package com.coworkio.entity.domain
 
+import com.coworkio.entity.domain.enum.Priority
+import com.coworkio.entity.domain.enum.TaskLevel
+import com.coworkio.entity.domain.enum.TaskType
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 import java.util.*

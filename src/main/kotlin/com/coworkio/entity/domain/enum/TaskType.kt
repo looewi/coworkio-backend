@@ -1,4 +1,4 @@
-package com.coworkio.entity.domain
+package com.coworkio.entity.domain.enum
 
 enum class TaskType(val value: String) {
     DEVELOPMENT("development"),

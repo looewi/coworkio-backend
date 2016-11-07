@@ -1,4 +1,4 @@
-package com.coworkio.entity.domain
+package com.coworkio.entity.domain.enum
 
 enum class TaskLevel(val level: Int, val value: String) {
     EPIC(0, "epic"),

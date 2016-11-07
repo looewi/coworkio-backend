@@ -1,4 +1,4 @@
-package com.coworkio.entity.domain
+package com.coworkio.entity.domain.enum
 
 enum class Priority(val level: Int, val value: String) {
     LOW(0, "low"),

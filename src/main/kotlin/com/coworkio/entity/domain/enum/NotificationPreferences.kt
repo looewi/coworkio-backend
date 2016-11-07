@@ -1,4 +1,4 @@
-package com.coworkio.entity.domain
+package com.coworkio.entity.domain.enum
 
 enum class NotificationPreferences(val value: String){
     ALL("all"),

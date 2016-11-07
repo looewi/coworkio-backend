@@ -1,5 +1,7 @@
 package com.coworkio.entity.domain
 
+import com.coworkio.entity.domain.enum.NotificationPreferences
+import com.coworkio.entity.domain.enum.Role
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 

@@ -1,5 +1,6 @@
 package com.coworkio.entity.domain
 
+import com.coworkio.entity.domain.enum.PositionRequestStatus
 import org.springframework.data.mongodb.core.mapping.Field
 import java.util.*
 
