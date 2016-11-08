@@ -18,6 +18,9 @@ data class User(
         @Field(value = "last_name")
         var lastName: String,
 
+        @Field(value = "account_confirmed")
+        var accountConfirmed: Boolean,
+
         var role: Role = Role.STUDENT,
         var email: String,
         var password: String,
