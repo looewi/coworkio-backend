@@ -16,5 +16,5 @@ enum class Priority(val level: Int, val value: String) {
     }
 
     fun getPriorityByLevel(level: Int): Priority?
-            = Priority.values().filter { it.level == level }.getOrNull(0)
+            = Priority.values().firstOrNull { it.level == level }
 }

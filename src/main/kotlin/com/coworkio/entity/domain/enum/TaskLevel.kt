@@ -14,5 +14,5 @@ enum class TaskLevel(val level: Int, val value: String) {
     }
 
     fun getByLevel(level: Int): TaskLevel?
-            = TaskLevel.values().filter { it.level == level }.getOrNull(0)
+            = TaskLevel.values().firstOrNull { it.level == level }
 }
