@@ -1,0 +1,117 @@
+package com.coworkio.util.security
+
+import com.coworkio.AUTHENTICATE_URL
+import com.coworkio.HTTP_POST
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.apache.commons.logging.LogFactory
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.InternalAuthenticationServiceException
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.AuthenticationException
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
+import org.springframework.web.filter.GenericFilterBean
+import org.springframework.web.util.UrlPathHelper
+import javax.servlet.FilterChain
+import javax.servlet.ServletRequest
+import javax.servlet.ServletResponse
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+
+class AuthenticationFilter() : GenericFilterBean() {
+
+    private val USERNAME_PARAMETER = "username"
+    private val PASSWORD_PARAMETER = "password"
+    private val TOKEN_HEADER = "X-Auth-Token"
+
+    private val log = LogFactory.getLog(this.javaClass)
+
+    private var authenticationManager: AuthenticationManager? = null
+
+    constructor(authenticationManager: AuthenticationManager) : this() {
+        this.authenticationManager = authenticationManager
+    }
+
+    override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
+        val httpRequest = request as HttpServletRequest
+        val httpResponse = response as HttpServletResponse
+
+        val username = httpRequest.getParameter(USERNAME_PARAMETER)
+        val password = httpRequest.getParameter(PASSWORD_PARAMETER)
+        val token = httpRequest.getHeader(TOKEN_HEADER)
+
+        val resourcePath = UrlPathHelper().getPathWithinApplication(httpRequest)
+
+
+        try {
+            if (postToAuthenticate(httpRequest, resourcePath)) {
+                log.debug("Trying to authenticate user $username by X-Auth-Username method.")
+
+                processUsernamePasswordAuthentication(httpResponse, username, password)
+                return
+            }
+
+            if (token != null) {
+                log.debug("Trying to authenticate user by X-Auth-Token method (Token: $token).")
+
+                processTokenAuthentication(token)
+            }
+
+            log.debug("Passing request down the filter chain.")
+
+            chain?.doFilter(request, response)
+        } catch (ex: InternalAuthenticationServiceException) {
+            SecurityContextHolder.clearContext()
+            log.error("Internal Authentication error occurred.", ex)
+            httpResponse.sendError((HttpServletResponse.SC_INTERNAL_SERVER_ERROR))
+        } catch (ex: AuthenticationException) {
+            SecurityContextHolder.clearContext()
+            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.message)
+        }
+    }
+
+    private fun postToAuthenticate(request: HttpServletRequest, path: String): Boolean {
+        return AUTHENTICATE_URL.equals(path, true) && HTTP_POST.equals(request.method, true)
+    }
+
+    private fun processUsernamePasswordAuthentication(response: HttpServletResponse, username: String?, password:
+    String?) {
+        val resultOfAuthentication = tryToAuthenticateWithUsernameAndPassword(username, password)
+        SecurityContextHolder.getContext().authentication = resultOfAuthentication
+
+        response.status = HttpServletResponse.SC_OK
+
+        val tokenResponse = TokenResponse(resultOfAuthentication.principal.toString())
+        val tokenJsonResponse = ObjectMapper().writeValueAsString(tokenResponse)
+
+        response.addHeader("Content-Type", "application/json")
+        response.writer.print(tokenJsonResponse)
+    }
+
+    private fun tryToAuthenticateWithUsernameAndPassword(username: String?, password: String?)
+            = tryToAuthenticate(UsernamePasswordAuthenticationToken(username, password))
+
+    private fun processTokenAuthentication(token: String?) {
+        val resultOfAuthentication = tryToAuthenticateWithToken(token)
+
+        SecurityContextHolder.getContext().authentication = resultOfAuthentication
+    }
+
+    private fun tryToAuthenticateWithToken(token: String?)
+            = tryToAuthenticate(PreAuthenticatedAuthenticationToken(token, null))
+
+    private fun tryToAuthenticate(requestAuthentication: Authentication): Authentication {
+        val responseAuthentication = authenticationManager?.authenticate(requestAuthentication)
+
+        if (responseAuthentication == null || !responseAuthentication.isAuthenticated) {
+            throw InternalAuthenticationServiceException("Unable to authenticate user for provided credentials")
+        }
+
+        log.debug("User successfully authenticated.")
+
+        return responseAuthentication
+    }
+}
+
+private data class TokenResponse(val token: String)
