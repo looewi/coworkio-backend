@@ -13,12 +13,6 @@ enum class TaskLevel(val level: Int, val value: String) {
         return getByLevel(this.level + 1)
     }
 
-    fun getByLevel(level: Int): TaskLevel? {
-        for(value in TaskLevel.values()) {
-            if(value.level == level) {
-                return value
-            }
-        }
-        return null
-    }
+    fun getByLevel(level: Int): TaskLevel?
+            = TaskLevel.values().filter { it.level == level }.getOrNull(0)
 }
