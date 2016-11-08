@@ -4,9 +4,11 @@ import com.coworkio.entity.domain.User
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.security.core.Authentication
+import org.springframework.stereotype.Component
 import java.util.*
 
-class TokenBuilder {
+@Component
+open class TokenBuilder {
 
     fun generateForAuthentication(authentication: Authentication): String
             = Jwts.builder()
