@@ -1,5 +1,7 @@
 package com.coworkio.service.security
 
+import com.coworkio.dto.UserDto
+import com.coworkio.dto.mapper.UserDtoMapper
 import com.coworkio.entity.domain.User
 import com.coworkio.service.domain.UserService
 import com.coworkio.util.security.TokenBuilder
@@ -9,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.nio.charset.Charset
 import java.util.*
@@ -19,9 +20,6 @@ open class AuthenticationService {
 
     private val UTF8 = "UTF-8"
     private val log = LogFactory.getLog(this.javaClass)
-
-    @Autowired
-    private lateinit var passwordEncoder: PasswordEncoder
 
     @Autowired
     private lateinit var tokenBuilder: TokenBuilder
@@ -37,15 +35,13 @@ open class AuthenticationService {
         return UsernamePasswordAuthenticationToken(email, null)
     }
 
-    fun register(user: User) {
+    fun register(user: UserDto) {
         if(userService.exists(user)) {
             throw BadCredentialsException("provided user already exists")
         }
-
-        //TODO: convert to User from UserDto
-
-        userService.saveOrUpdate(user)
-        sendConfirmationEmail(user)
+        val userDomain = UserDtoMapper().toDomain(user)
+        userService.saveOrUpdate(userDomain)
+        sendConfirmationEmail(userDomain)
     }
 
     fun confirm(encodedToken: String): Boolean {

@@ -1,5 +1,6 @@
 package com.coworkio.service.domain
 
+import com.coworkio.dto.UserDto
 import com.coworkio.entity.domain.User
 import com.coworkio.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -42,6 +43,6 @@ open class UserService {
         saveOrUpdate(user)
     }
 
-    open fun exists(user: User)
+    open fun exists(user: UserDto)
             = userRepository.findUserByEmailAndPassword(user.email, user.password) != null
 }
