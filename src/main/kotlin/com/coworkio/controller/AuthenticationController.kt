@@ -16,7 +16,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping(AUTH_PREFIX)
-class AuthenticationController {
+open class AuthenticationController {
 
     private val log = LogFactory.getLog(this.javaClass)
 

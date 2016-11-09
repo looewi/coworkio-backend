@@ -38,6 +38,9 @@ open class UserService {
     open fun findById(id: String)
             = userRepository.findOne(id)
 
+    open fun isEmailAvailable(email: String)
+            = userRepository.findUserByEmail(email) == null
+
     open fun removeSilently(user: User) {
         user.baseInfo.isDeleted = true
         saveOrUpdate(user)
