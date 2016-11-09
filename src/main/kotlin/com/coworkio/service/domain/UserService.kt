@@ -41,4 +41,7 @@ open class UserService {
         user.baseInfo.isDeleted = true
         saveOrUpdate(user)
     }
+
+    open fun exists(user: User)
+            = userRepository.findUserByEmailAndPassword(user.email, user.password) != null
 }

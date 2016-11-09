@@ -1,6 +1,7 @@
 package com.coworkio.service.security
 
 import com.coworkio.entity.domain.User
+import com.coworkio.service.domain.UserService
 import com.coworkio.util.security.TokenBuilder
 import com.coworkio.util.security.TokenParser
 import org.apache.commons.logging.LogFactory
@@ -28,14 +29,23 @@ open class AuthenticationService {
     @Autowired
     private lateinit var tokenParser: TokenParser
 
-    fun login(username: String, password: String): Authentication {
+    @Autowired
+    private lateinit var userService: UserService
+
+    fun login(email: String, password: String): Authentication {
         //TODO: add logic after implementing user dao and service
-        return UsernamePasswordAuthenticationToken(username, null)
+        return UsernamePasswordAuthenticationToken(email, null)
     }
 
-    fun register(userDto: User?) {
-        //TODO change to user dto and add logic for checking for existence and inserting
-        //TODO: send confirmation email if necessary
+    fun register(user: User) {
+        if(userService.exists(user)) {
+            throw BadCredentialsException("provided user already exists")
+        }
+
+        //TODO: convert to User from UserDto
+
+        userService.saveOrUpdate(user)
+        sendConfirmationEmail(user)
     }
 
     fun confirm(encodedToken: String): Boolean {
