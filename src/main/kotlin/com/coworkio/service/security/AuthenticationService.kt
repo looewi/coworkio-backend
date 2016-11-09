@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.nio.charset.Charset
 import java.util.*
@@ -30,9 +31,17 @@ open class AuthenticationService {
     @Autowired
     private lateinit var userService: UserService
 
+    @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
+
     fun login(email: String, password: String): Authentication {
-        //TODO: add logic after implementing user dao and service
-        return UsernamePasswordAuthenticationToken(email, null)
+        val user = userService.findByEmail(email)
+
+        return if (passwordEncoder.matches(password, user?.password)) {
+            UsernamePasswordAuthenticationToken(email, null)
+        } else {
+            throw BadCredentialsException("Username and password are not match.")
+        }
     }
 
     fun register(user: UserDto) {

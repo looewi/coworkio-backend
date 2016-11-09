@@ -48,4 +48,7 @@ open class UserService {
 
     open fun exists(user: UserDto)
             = userRepository.findUserByEmailAndPassword(user.email, user.password) != null
+
+    fun findByEmail(email: String)
+            = userRepository.findUserByEmail(email)
 }

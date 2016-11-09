@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse
 
 class AuthenticationFilter() : GenericFilterBean() {
 
-    private val USERNAME_PARAMETER = "username"
+    private val EMAIL_PARAMETER = "email"
     private val PASSWORD_PARAMETER = "password"
     private val TOKEN_HEADER = "X-Auth-Token"
 
@@ -37,24 +37,22 @@ class AuthenticationFilter() : GenericFilterBean() {
         val httpRequest = request as HttpServletRequest
         val httpResponse = response as HttpServletResponse
 
-        val username = httpRequest.getParameter(USERNAME_PARAMETER)
+        val email = httpRequest.getParameter(EMAIL_PARAMETER)
         val password = httpRequest.getParameter(PASSWORD_PARAMETER)
         val token = httpRequest.getHeader(TOKEN_HEADER)
 
         val resourcePath = UrlPathHelper().getPathWithinApplication(httpRequest)
 
-
         try {
             if (postToAuthenticate(httpRequest, resourcePath)) {
-                log.debug("Trying to authenticate user $username by X-Auth-Username method.")
+                log.debug("Trying to authenticate user $email by X-Auth-Username method.")
 
-                processUsernamePasswordAuthentication(httpResponse, username, password)
+                processEmailPasswordAuthentication(httpResponse, email, password)
                 return
             }
 
             if (token != null) {
                 log.debug("Trying to authenticate user by X-Auth-Token method (Token: $token).")
-
                 processTokenAuthentication(token)
             }
 
@@ -75,7 +73,7 @@ class AuthenticationFilter() : GenericFilterBean() {
         return AUTHENTICATE_URL.equals(path, true) && HTTP_POST.equals(request.method, true)
     }
 
-    private fun processUsernamePasswordAuthentication(response: HttpServletResponse, username: String?, password:
+    private fun processEmailPasswordAuthentication(response: HttpServletResponse, username: String?, password:
     String?) {
         val resultOfAuthentication = tryToAuthenticateWithUsernameAndPassword(username, password)
         SecurityContextHolder.getContext().authentication = resultOfAuthentication
