@@ -5,8 +5,6 @@ import java.util.*
 
 data class BaseInfo (
 
-        var id: String?,
-
         @Field(value = "last_modified_date")
         var lastModifiedDate: Date = Date(),
 

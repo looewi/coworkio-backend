@@ -24,7 +24,7 @@ open class UserService {
 
     open fun saveOrUpdate(user: User): User {
         user.baseInfo.lastModifiedDate = Date()
-        return if(user.baseInfo.id == null) {
+        return if(user.id == null) {
             userRepository.insert(user)
         } else {
             userRepository.save(user)

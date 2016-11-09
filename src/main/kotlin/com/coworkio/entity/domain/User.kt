@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Field
 
 @Document(collection = "user")
 data class User(
+        var id: String?,
+
+        @Field(value = "base_info")
         var baseInfo: BaseInfo,
 
         @Field(value = "first_name")

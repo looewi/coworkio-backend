@@ -9,6 +9,10 @@ import java.util.*
 
 @Document(collection = "task")
 data class Task(
+
+        var id: String?,
+
+        @Field(value = "base_info")
         var baseInfo: BaseInfo,
 
         var title: String,

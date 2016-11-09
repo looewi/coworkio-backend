@@ -6,7 +6,11 @@ import java.util.*
 
 @Document(collection = "project")
 data class Project(
+        var id: String?,
+
+        @Field(value = "base_info")
         var baseInfo: BaseInfo,
+
         var title: String,
         var description: String?,
 
