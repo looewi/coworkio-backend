@@ -8,6 +8,7 @@ import com.coworkio.util.security.TokenBuilder
 import com.coworkio.util.security.TokenParser
 import org.apache.commons.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -17,6 +18,7 @@ import java.nio.charset.Charset
 import java.util.*
 
 @Service
+@Qualifier("authenticationService")
 open class AuthenticationService {
 
     private val UTF8 = "UTF-8"
@@ -73,4 +75,7 @@ open class AuthenticationService {
 
         //TODO: send email
     }
+
+    open fun encodePassword(password: String):String
+            = passwordEncoder.encode(password)
 }

@@ -5,14 +5,21 @@ import com.coworkio.entity.domain.BaseInfo
 import com.coworkio.entity.domain.User
 import com.coworkio.entity.domain.enum.NotificationPreferences
 import com.coworkio.entity.domain.enum.Role
+import com.coworkio.service.security.AuthenticationService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.stereotype.Component
 import java.util.*
 
-class UserDtoMapper : DtoMapper<User, UserDto> {
+@Component
+open class UserDtoMapper : DtoMapper<User, UserDto> {
+
+    private val BCRYPT_STRENGTH = 15
 
     @Autowired
-    private lateinit var passwordEncoder: PasswordEncoder
+    @Qualifier("authenticationService")
+    private lateinit var authService: AuthenticationService
 
     override fun toDomain(dto: UserDto)
             = User(
@@ -24,7 +31,7 @@ class UserDtoMapper : DtoMapper<User, UserDto> {
                 role = Role.STUDENT,
                 photoUrl = null,
                 email = dto.email,
-                password = passwordEncoder.encode(dto.password),
+                password = BCryptPasswordEncoder(BCRYPT_STRENGTH).encode(dto.password),
                 accountConfirmed = false,
                 notificationPreferences = NotificationPreferences.ALL,
                 github = null,
