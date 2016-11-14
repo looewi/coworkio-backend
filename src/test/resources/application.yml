@@ -1,0 +1,25 @@
+logging:
+  file: logs/coworkio.log
+spring:
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017
+      username: coworkio_user
+      password: coworkio_user
+      database: coworkioDB
+      authentication-database: coworkioDB
+---
+
+spring:
+  profiles: dev
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017
+      username: coworkio_user
+      password: coworkio_user
+      database: coworkioDB
+      authentication-database: coworkioDB
+  security:
+      cors:
+        origins:
+          - "http://localhost:5555"
