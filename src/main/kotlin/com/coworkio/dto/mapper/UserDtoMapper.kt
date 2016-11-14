@@ -32,7 +32,7 @@ open class UserDtoMapper : DtoMapper<User, UserDto> {
                 photoUrl = null,
                 email = dto.email,
                 password = BCryptPasswordEncoder(BCRYPT_STRENGTH).encode(dto.password),
-                accountConfirmed = false,
+                accountConfirmed = true,
                 notificationPreferences = NotificationPreferences.ALL,
                 github = null,
                 accounts = null,
