@@ -19,7 +19,7 @@ data class Project(
         var startDate: Date,
 
         @Field(value = "end_date")
-        var endDate: Date,
+        var endDate: Date?,
 
         var positions: List<Position>?,
         var sprints: List<Sprint>?,
