@@ -8,12 +8,14 @@ import java.util.*
 @Validated
 open class ProjectDto: Serializable {
 
+    var id: String? = null
+
     @NotEmpty
     lateinit var title: String
 
     var description: String? = ""
 
-    var startDate: Date? = Date()
+    var startDate: Date = Date()
 
     var endDate: Date? = null
 
@@ -25,6 +27,17 @@ open class ProjectDto: Serializable {
 //    TODO: will be added as incoming from frontend data later
 //    lateinit var board: BoardDto
 
-    lateinit var githubLink: String
+    var githubLink: String? = null
 
+    constructor()
+
+    constructor(id: String?, title: String, description: String?, startDate: Date, endDate: Date?, positions: List<PositionDto>?, githubLink: String?) {
+        this.id = id
+        this.title = title
+        this.description = description
+        this.startDate = startDate
+        this.endDate = endDate
+        this.positions = positions
+        this.githubLink = githubLink
+    }
 }

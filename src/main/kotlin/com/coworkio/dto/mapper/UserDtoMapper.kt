@@ -23,7 +23,7 @@ open class UserDtoMapper : DtoMapper<User, UserDto> {
 
     override fun toDomain(dto: UserDto)
             = User(
-                id = null,
+                id = dto.id,
                 baseInfo = BaseInfo(Date(), false),
                 firstName = dto.firstName,
                 middleName = null,

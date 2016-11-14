@@ -10,6 +10,8 @@ import javax.validation.constraints.Size
 @Validated
 open class UserDto: Serializable {
 
+    var id:String? = null
+
     @NotEmpty
     @Email
     lateinit var email: String
