@@ -3,9 +3,11 @@ package com.coworkio.dto.mapper
 import com.coworkio.dto.PositionDto
 import com.coworkio.dto.ProjectDto
 import com.coworkio.entity.domain.*
+import org.springframework.stereotype.Component
 import java.util.*
 
-class ProjectDtoMapper : DtoMapper<Project, ProjectDto>{
+@Component
+open class ProjectDtoMapper : DtoMapper<Project, ProjectDto>{
     override fun toDomain(dto: ProjectDto)
             = Project(
                 id = dto.id,
