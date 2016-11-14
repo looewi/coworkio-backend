@@ -1,12 +1,12 @@
 package com.coworkio.entity.domain.enum
 
 enum class PositionType(val value: String) {
-    FULLSTACK("full-stack developer"),
-    FRONTEND("frontend developer"),
-    BACKEND("backend developer"),
+    FULLSTACK("FULLSTACK"),
+    FRONTEND("FRONTEND"),
+    BACKEND("BACKEND"),
     QA("QA"),
-    DESIGNER("designer"),
-    BA("bysiness analysis"),
-    DEVOPS("devops"),
-    OTHER("other")
+    DESIGNER("DESIGNER"),
+    BA("BA"),
+    DEVOPS("DEVOPS"),
+    OTHER("OTHER")
 }

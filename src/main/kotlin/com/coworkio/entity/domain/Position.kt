@@ -1,6 +1,7 @@
 package com.coworkio.entity.domain
 
 import org.springframework.data.mongodb.core.mapping.Field
+import java.io.Serializable
 
 data class Position (
         var positionInfo: PositionInfo,
@@ -13,4 +14,4 @@ data class Position (
 
         @Field(value = "position_requests")
         var positionRequests: List<PositionRequest>?
-)
+):Serializable

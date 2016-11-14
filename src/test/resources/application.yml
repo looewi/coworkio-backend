@@ -8,10 +8,6 @@ spring:
       password: coworkio_user
       database: coworkioDB
       authentication-database: coworkioDB
-  security:
-    cors:
-      origins:
-        - "http://localhost:5555"
 ---
 
 spring:

@@ -2,11 +2,16 @@ package com.coworkio.entity.domain
 
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
+import java.io.Serializable
 import java.util.*
 
 @Document(collection = "project")
 data class Project(
+        var id: String?,
+
+        @Field(value = "base_info")
         var baseInfo: BaseInfo,
+
         var title: String,
         var description: String?,
 
@@ -22,4 +27,4 @@ data class Project(
 
         @Field(value = "github_link")
         var githubLink: String?
-)
+):Serializable

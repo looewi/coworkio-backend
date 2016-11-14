@@ -1,10 +1,14 @@
 package com.coworkio.service.security
 
+import com.coworkio.dto.UserDto
+import com.coworkio.dto.mapper.UserDtoMapper
 import com.coworkio.entity.domain.User
+import com.coworkio.service.domain.UserService
 import com.coworkio.util.security.TokenBuilder
 import com.coworkio.util.security.TokenParser
 import org.apache.commons.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -14,13 +18,11 @@ import java.nio.charset.Charset
 import java.util.*
 
 @Service
+@Qualifier("authenticationService")
 open class AuthenticationService {
 
     private val UTF8 = "UTF-8"
     private val log = LogFactory.getLog(this.javaClass)
-
-    @Autowired
-    private lateinit var passwordEncoder: PasswordEncoder
 
     @Autowired
     private lateinit var tokenBuilder: TokenBuilder
@@ -28,14 +30,29 @@ open class AuthenticationService {
     @Autowired
     private lateinit var tokenParser: TokenParser
 
-    fun login(username: String, password: String): Authentication {
-        //TODO: add logic after implementing user dao and service
-        return UsernamePasswordAuthenticationToken(username, null)
+    @Autowired
+    private lateinit var userService: UserService
+
+    @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
+
+    fun login(email: String, password: String): Authentication {
+        val user = userService.findByEmail(email)
+
+        return if (passwordEncoder.matches(password, user?.password)) {
+            UsernamePasswordAuthenticationToken(email, null)
+        } else {
+            throw BadCredentialsException("Username and password are not match.")
+        }
     }
 
-    fun register(userDto: User?) {
-        //TODO change to user dto and add logic for checking for existence and inserting
-        //TODO: send confirmation email if necessary
+    fun register(user: UserDto) {
+        if(userService.exists(user)) {
+            throw BadCredentialsException("provided user already exists")
+        }
+        val userDomain = UserDtoMapper().toDomain(user)
+        userService.saveOrUpdate(userDomain)
+        sendConfirmationEmail(userDomain)
     }
 
     fun confirm(encodedToken: String): Boolean {
@@ -58,4 +75,7 @@ open class AuthenticationService {
 
         //TODO: send email
     }
+
+    open fun encodePassword(password: String):String
+            = passwordEncoder.encode(password)
 }

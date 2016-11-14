@@ -20,14 +20,14 @@ open class UsernameAndPasswordAuthenticationProvider : AuthenticationProvider{
     private lateinit var authService: AuthenticationService
 
     override fun authenticate(authentication: Authentication?): Authentication? {
-        val username = authentication?.principal?.toString()
+        val email = authentication?.principal?.toString()
         val password = authentication?.credentials?.toString()
 
-        if (username == null || password == null) {
+        if (email == null || password == null) {
             throw BadCredentialsException("Invalid user credentials.")
         }
 
-        val auth = authService.login(username, password)
+        val auth = authService.login(email, password)
         val token = tokenBuilder.generateForAuthentication(auth)
 
         val resultAuth = PreAuthenticatedAuthenticationToken(token, null)

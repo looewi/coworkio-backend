@@ -1,9 +1,9 @@
 package com.coworkio.entity.domain.enum
 
 enum class TaskLevel(val level: Int, val value: String) {
-    EPIC(0, "epic"),
-    USER_STORY(1, "user story"),
-    TASK(2, "task");
+    EPIC(0, "EPIC"),
+    USER_STORY(1, "USER_STORY"),
+    TASK(2, "TASK");
 
     open fun getParentType(): TaskLevel? {
         return getByLevel(this.level - 1)

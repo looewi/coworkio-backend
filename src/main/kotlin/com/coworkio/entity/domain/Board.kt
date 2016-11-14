@@ -1,13 +1,14 @@
 package com.coworkio.entity.domain
 
 import org.springframework.data.mongodb.core.mapping.Field
+import java.io.Serializable
 
 data class Board (
-        var statuses: List<Status> = listOf(Status(0, "Created")),
+        var statuses: List<Status>,
 
         @Field(value = "working_hours_per_day")
-        var workingHoursPerDay: Int = 8,
+        var workingHoursPerDay: Int,
 
         @Field(value = "working_days_per_week")
-        var woringDaysPerWeek: Int = 5
-)
+        var workingDaysPerWeek: Int
+):Serializable
