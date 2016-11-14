@@ -2,6 +2,7 @@ package com.coworkio.entity.domain
 
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
+import java.io.Serializable
 
 @Document(collection = "skill")
 data class Skill (
@@ -14,4 +15,4 @@ data class Skill (
 
         @Field(value = "total_used_count")
         var totalUsedCount: Int
-)
+):Serializable

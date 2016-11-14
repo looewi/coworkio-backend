@@ -16,14 +16,24 @@ class UserDtoMapper : DtoMapper<User, UserDto> {
 
     override fun toDomain(dto: UserDto)
             = User(
+                id = null,
                 baseInfo = BaseInfo(Date(), false),
                 firstName = dto.firstName,
+                middleName = null,
                 lastName = dto.lastName,
                 role = Role.STUDENT,
+                photoUrl = null,
                 email = dto.email,
                 password = passwordEncoder.encode(dto.password),
                 accountConfirmed = false,
-                notificationPreferences = NotificationPreferences.ALL)
+                notificationPreferences = NotificationPreferences.ALL,
+                github = null,
+                accounts = null,
+                phoneNumber = null,
+                projects = null,
+                skills = null,
+                university = null
+            )
 
     override fun toDto(domain: User)
             = UserDto(domain.email, domain.password, domain.firstName, domain.lastName)

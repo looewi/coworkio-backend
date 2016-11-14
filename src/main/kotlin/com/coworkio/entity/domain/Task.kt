@@ -5,6 +5,7 @@ import com.coworkio.entity.domain.enum.TaskLevel
 import com.coworkio.entity.domain.enum.TaskType
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
+import java.io.Serializable
 import java.util.*
 
 @Document(collection = "task")
@@ -18,10 +19,10 @@ data class Task(
         var title: String,
 
         @Field(value = "task_level")
-        var taskLevel: TaskLevel = TaskLevel.TASK,
+        var taskLevel: TaskLevel,
 
         @Field(value = "task_type")
-        var taskType: TaskType = TaskType.DEVELOPMENT,
+        var taskType: TaskType,
 
         var subtasks: List<String>?,
 
@@ -40,9 +41,9 @@ data class Task(
         var assigneeId: String?,
 
         var estimate: Double?,
-        var priority: Priority = Priority.NORMAL,
+        var priority: Priority,
         var tags: List<String>?,
-        var status: Int = 0,
+        var status: Int,
 
         @Field(value = "sprint_id")
         var sprintId: String?,
@@ -54,4 +55,4 @@ data class Task(
 
         @Field(value = "due_date")
         var dueDate: Date?
-)
+):Serializable

@@ -1,6 +1,7 @@
 package com.coworkio.entity.domain
 
 import org.springframework.data.mongodb.core.mapping.Field
+import java.io.Serializable
 
 data class UniversityInfo (
         var university: String?,
@@ -13,4 +14,4 @@ data class UniversityInfo (
 
         @Field(value = "end_year")
         var endYear: Int?
-)
+):Serializable

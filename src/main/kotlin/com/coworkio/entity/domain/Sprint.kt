@@ -1,6 +1,7 @@
 package com.coworkio.entity.domain
 
 import org.springframework.data.mongodb.core.mapping.Field
+import java.io.Serializable
 import java.util.*
 
 data class Sprint(
@@ -16,4 +17,4 @@ data class Sprint(
 
         @Field(value = "next_sprint_id")
         var nextSprintId: String?
-)
+):Serializable

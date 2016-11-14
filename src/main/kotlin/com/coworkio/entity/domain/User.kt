@@ -4,10 +4,11 @@ import com.coworkio.entity.domain.enum.NotificationPreferences
 import com.coworkio.entity.domain.enum.Role
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
+import java.io.Serializable
 
 @Document(collection = "user")
 data class User(
-        var id: String? = null,
+        var id: String?,
 
         @Field(value = "base_info")
         var baseInfo: BaseInfo,
@@ -16,7 +17,7 @@ data class User(
         var firstName: String,
 
         @Field(value = "middle_name")
-        var middleName: String? = null,
+        var middleName: String?,
 
         @Field(value = "last_name")
         var lastName: String,
@@ -24,24 +25,24 @@ data class User(
         @Field(value = "account_confirmed")
         var accountConfirmed: Boolean,
 
-        var role: Role = Role.STUDENT,
+        var role: Role,
         var email: String,
         var password: String,
 
         @Field(value = "phone_number")
-        var phoneNumber: String? = null,
+        var phoneNumber: String?,
 
-        var accounts: List<SocialAccount>? = null,
-        var github: String? = null,
+        var accounts: List<SocialAccount>?,
+        var github: String?,
 
         @Field(value = "photo_url")
-        var photoUrl: String? = null,
+        var photoUrl: String?,
 
-        var university: UniversityInfo? = null,
+        var university: UniversityInfo?,
 
-        var skills: List<UserSkill>? = null,
-        var projects: List<UserProject>? = null,
+        var skills: List<UserSkill>?,
+        var projects: List<UserProject>?,
 
         @Field(value = "notification_preferences")
-        var notificationPreferences: NotificationPreferences = NotificationPreferences.ALL
-)
+        var notificationPreferences: NotificationPreferences
+): Serializable
