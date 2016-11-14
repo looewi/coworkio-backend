@@ -13,7 +13,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 
-class UserRepositoryTest : AbstractTestCase() {
+class UserServiceTest : AbstractTestCase() {
 
     private lateinit var user: User
 
@@ -79,7 +79,7 @@ class UserRepositoryTest : AbstractTestCase() {
     }
 
     @After
-    fun removeTestData() {
+    fun doCleanup() {
         userService.delete(user)
     }
 }
