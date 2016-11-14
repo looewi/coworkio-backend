@@ -20,19 +20,19 @@ open class ProjectService {
     lateinit private var projectRepository: ProjectRepository
 
 
-    open fun saveOrUpdate(projectDto: ProjectDto): Project {
+    fun saveOrUpdate(projectDto: ProjectDto): Project {
         val project = projectDtoMapper.toDomain(projectDto)
         return saveOrUpdate(project)
     }
 
-    open fun saveOrUpdate(project: Project)
+    fun saveOrUpdate(project: Project)
             = if(project.id != null) {
                 projectRepository.save(project)
             } else {
                 projectRepository.insert(project)
             }
 
-    open fun getProjectDtoById(id: String): ProjectDto? {
+    fun getProjectDtoById(id: String): ProjectDto? {
         val project = projectRepository.findOne(id)
         return if(project != null) {
             projectDtoMapper.toDto(project)
@@ -41,16 +41,16 @@ open class ProjectService {
         }
     }
 
-    open fun getProjectById(id: String): Project? {
+    fun getProjectById(id: String): Project? {
         val project = projectRepository.findOne(id)
         return project
     }
 
-    open fun getProjectsByUser(userId: String): List<ProjectDto>? {
+    fun getProjectsByUser(userId: String): List<ProjectDto>? {
         throw NotImplementedError("method is not implemented yet")
     }
 
-    open fun removeSilently(id: String): Boolean {
+    fun removeSilently(id: String): Boolean {
         val project = projectRepository.findOne(id)
         return if(project != null) {
             project.baseInfo = BaseInfo(Date(), true)
@@ -61,14 +61,18 @@ open class ProjectService {
         }
     }
 
-    open fun removeSilently(projectDto: ProjectDto): Boolean {
+    fun removeSilently(projectDto: ProjectDto): Boolean {
         val project = projectDtoMapper.toDomain(projectDto)
         project.baseInfo = BaseInfo(Date(), true)
         projectRepository.save(project)
         return true
     }
 
-    open fun delete(id: String) {
+    fun delete(id: String) {
         projectRepository.delete(id)
+    }
+
+    fun addPosition() {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

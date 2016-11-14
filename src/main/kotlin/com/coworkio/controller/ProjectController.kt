@@ -1,5 +1,6 @@
 package com.coworkio.controller
 
+import com.coworkio.dto.PositionDto
 import com.coworkio.dto.ProjectDto
 import com.coworkio.service.domain.ProjectService
 import org.springframework.beans.factory.annotation.Autowired
@@ -7,10 +8,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -27,6 +25,13 @@ open class ProjectController {
         }
         val id = projectService.saveOrUpdate(projectDto).id
         return ResponseEntity.ok(id)
+    }
+
+    @RequestMapping(value = "/add/position", method = arrayOf(RequestMethod.POST))
+    open fun addPosition(@Validated @RequestBody positionDto: PositionDto, bindingResult: BindingResult,
+                         @RequestParam projectId: String): Boolean {
+        projectService.addPosition()
+        return true
     }
 
 }
