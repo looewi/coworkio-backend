@@ -36,4 +36,28 @@ open class PositionDto: Serializable {
         this.type = type
         this.employeeId = employeeId
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is PositionDto) return false
+
+        if (id != other.id) return false
+        if (title != other.title) return false
+        if (description != other.description) return false
+        if (type != other.type) return false
+        if (employeeId != other.employeeId) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + title.hashCode()
+        result = 31 * result + (description?.hashCode() ?: 0)
+        result = 31 * result + type.hashCode()
+        result = 31 * result + (employeeId?.hashCode() ?: 0)
+        return result
+    }
+
+
 }

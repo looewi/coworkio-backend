@@ -1,7 +1,9 @@
 package com.scivantage.service
 
+import com.coworkio.dto.PositionDto
 import com.coworkio.dto.ProjectDto
 import com.coworkio.entity.domain.Project
+import com.coworkio.entity.domain.enum.PositionType
 import com.coworkio.service.domain.ProjectService
 import com.scivantage.AbstractTestCase
 import org.junit.After
@@ -39,6 +41,60 @@ class ProjectServiceTest: AbstractTestCase() {
         project.description = newDescription
         project = projectService.saveOrUpdate(project)
         Assert.assertEquals(newDescription, project.description)
+    }
+
+    @Test
+    fun addPosition() {
+        val position = PositionDto(
+                id = Date().time.toString(),
+                title = "new position",
+                description = "description",
+                type = PositionType.FRONTEND,
+                employeeId = null
+        )
+        projectService.addPosition(project.id!!, position)
+        val project1 = projectService.getProjectDtoById(project.id!!)
+        Assert.assertEquals(project1?.positions?.size, 1)
+
+        val position2 = PositionDto(
+                id = Date().time.toString(),
+                title = "new position2",
+                description = "description2",
+                type = PositionType.FRONTEND,
+                employeeId = null
+        )
+
+        projectService.addPosition(project.id!!, position2)
+        val project2 = projectService.getProjectDtoById(project.id!!)
+        Assert.assertEquals(project2?.positions?.size, 2)
+    }
+
+    @Test
+    fun getPositionsOfProject() {
+        val position = PositionDto(
+                id = Date().time.toString(),
+                title = "new position",
+                description = "description",
+                type = PositionType.FRONTEND,
+                employeeId = null
+        )
+        projectService.addPosition(project.id!!, position)
+
+        val position2 = PositionDto(
+                id = Date().time.toString(),
+                title = "new position2",
+                description = "description2",
+                type = PositionType.FRONTEND,
+                employeeId = null
+        )
+
+        projectService.addPosition(project.id!!, position2)
+
+        val allPositions = projectService.getPositionsByProject(project.id!!)
+        Assert.assertEquals(allPositions?.size, 2)
+
+        val positionById = projectService.getPositionById(project.id!!, position.id)
+        Assert.assertEquals(positionById, position)
     }
 
     @Test
