@@ -41,4 +41,12 @@ open class ProjectRepositoryImpl: CustomProjectRepository {
                         Project::class.java
         )
     }
+
+    override fun getProjectsByIds(projectIds: List<String>): List<Project>
+            = mongoTemplate.find(
+                Query.query(Criteria.where("id").`in`(projectIds)),
+                Project::class.java
+            )
+
+
 }
