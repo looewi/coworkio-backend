@@ -18,7 +18,7 @@ open class ProjectController {
     private lateinit var projectService: ProjectService
 
     @RequestMapping(value = "/create", method = arrayOf(RequestMethod.POST))
-    open fun createProject(@Validated @RequestBody projectDto: ProjectDto, bindingResult: BindingResult): ResponseEntity<String?> {
+    fun createProject(@Validated @RequestBody projectDto: ProjectDto, bindingResult: BindingResult): ResponseEntity<String?> {
         if(bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("-1")
         }
@@ -27,12 +27,12 @@ open class ProjectController {
     }
 
     @RequestMapping(value = "/all", method = arrayOf(RequestMethod.GET))
-    open fun getAllProjects(): List<ProjectDto>? {
+    fun getAllProjects(): List<ProjectDto>? {
         return projectService.getAllProjects()
     }
 
     @RequestMapping(value = "/{id}", method = arrayOf(RequestMethod.GET))
-    open fun getProjectById(@PathVariable id: String): ProjectDto?
+    fun getProjectById(@PathVariable id: String): ProjectDto?
             = projectService.getProjectDtoById(id)
 
 }

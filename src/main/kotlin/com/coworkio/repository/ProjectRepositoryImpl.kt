@@ -25,17 +25,20 @@ open class ProjectRepositoryImpl: CustomProjectRepository {
 
     override fun updatePosition(projectId: String, position: Position) {
         val project = mongoTemplate.findById(projectId, Project::class.java)
-        project.positions?.map {
-                it -> {
-                    if(it.id == position.id) {
-                        it.employeeId = position.employeeId
-                    }
+        if(project.positions != null) {
+            project.positions = project.positions!!.map {
+                it ->
+                if (it.id == position.id) {
+                    it.employeeId = position.employeeId
                 }
+                it
+            }
         }
+
         mongoTemplate.upsert(
                 Query.query(Criteria.where("id").`is`(projectId)),
-                        Update().pushAll("positions", arrayOf(project.positions)),
+                        Update().set("positions", project.positions),
                         Project::class.java
-                )
+        )
     }
 }
