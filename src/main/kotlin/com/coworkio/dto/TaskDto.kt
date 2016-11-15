@@ -5,11 +5,12 @@ import com.coworkio.entity.domain.enum.TaskLevel
 import com.coworkio.entity.domain.enum.TaskType
 import org.hibernate.validator.constraints.NotEmpty
 import org.springframework.validation.annotation.Validated
+import java.io.Serializable
 import java.util.*
 import javax.validation.constraints.NotNull
 
 @Validated
-open class TaskDto {
+open class TaskDto: Serializable {
 
     var id: String? = null
 

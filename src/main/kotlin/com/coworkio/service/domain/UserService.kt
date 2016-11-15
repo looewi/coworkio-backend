@@ -1,6 +1,8 @@
 package com.coworkio.service.domain
 
 import com.coworkio.dto.UserDto
+import com.coworkio.dto.UserProfileDto
+import com.coworkio.dto.mapper.UserProfileDtoMapper
 import com.coworkio.entity.domain.User
 import com.coworkio.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,7 +14,10 @@ import java.util.*
 open class UserService {
 
     @Autowired
-    lateinit var userRepository: UserRepository
+    private lateinit var userRepository: UserRepository
+
+    @Autowired
+    private lateinit var userProfileDtoMapper: UserProfileDtoMapper
 
     fun count(): Long
             = userRepository.count()
@@ -32,11 +37,21 @@ open class UserService {
         }
     }
 
+    fun saveOrUpdate(userProfileDto: UserProfileDto): UserProfileDto
+            = if(userProfileDto.id == null) {
+                userProfileDtoMapper.toDto(userRepository.insert(userProfileDtoMapper.toDomain(userProfileDto)))
+            } else {
+                userProfileDtoMapper.toDto(userRepository.save(userProfileDtoMapper.toDomain(userProfileDto)))
+            }
+
     fun findAll(): Iterable<User>
             = userRepository.findAll()
 
-    fun findById(id: String)
+    fun findById(id: String): User
             = userRepository.findOne(id)
+
+    fun findUserProfileById(id: String): UserProfileDto
+            = userProfileDtoMapper.toDto(userRepository.findOne(id))
 
     fun isEmailAvailable(email: String)
             = userRepository.findUserByEmail(email) == null
