@@ -5,6 +5,8 @@ import com.coworkio.service.domain.UserService
 import com.sun.org.apache.bcel.internal.generic.GETFIELD
 import javassist.tools.web.BadHttpRequest
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -27,15 +29,24 @@ open class UserController {
 
     @RequestMapping(value = "/{id}", method = arrayOf(RequestMethod.GET))
     fun getUserById(@PathVariable id: String)
-            = userService.findById(id)
+            = userService.findUserProfileById(id)
 
     @RequestMapping(value = "/update", method = arrayOf(RequestMethod.POST))
     fun updateUser(@Validated @RequestBody userProfileDto: UserProfileDto, bindingResult: BindingResult): Boolean {
         if(bindingResult.hasErrors()) {
             throw BadHttpRequest()
         }
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
+        val user = userService.findByEmail(auth.principal as String)
+        return if (user != null) {
+            userProfileDto.email = auth.principal as String
+            userProfileDto.password = user.password
 
-        return true
+            userService.saveOrUpdate(userProfileDto)
+            true
+        } else {
+            false
+        }
     }
 
 }
