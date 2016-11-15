@@ -90,4 +90,15 @@ open class ProjectService {
 
     fun addPosition(projectId: String, positionDto: PositionDto)
             = projectRepository.addPosition(projectId, positionDtoMapper.toDomain(positionDto))
+
+    fun setUserToPosition(projectId: String, positionId: String, userId: String): Boolean {
+        val position = getPositionById(projectId, positionId)
+        return if(position != null && position?.employeeId == null) {
+            position.employeeId = userId
+            projectRepository.updatePosition(projectId, positionDtoMapper.toDomain(position))
+            true
+        } else {
+            false
+        }
+    }
 }

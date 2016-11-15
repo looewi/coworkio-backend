@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping(value = "/project/{projectId}/position")
 open class PositionController {
 
-    //add position to project
-    //set user to position
-
     @Autowired
     private lateinit var projectService: ProjectService
 
@@ -34,4 +31,9 @@ open class PositionController {
         }
         return projectService.addPosition(projectId, positionDto)
     }
+
+    @RequestMapping(value = "/{positionId}/employ", method = arrayOf(RequestMethod.POST))
+    open fun setUserToPosition(@PathVariable projectId: String, @PathVariable positionId: String, @RequestParam userId: String)
+            = projectService.setUserToPosition(projectId, positionId, userId)
+
 }

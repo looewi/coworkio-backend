@@ -23,5 +23,19 @@ open class ProjectRepositoryImpl: CustomProjectRepository {
                 Project::class.java
             ).upsertedId as String?
 
-
+    override fun updatePosition(projectId: String, position: Position) {
+        val project = mongoTemplate.findById(projectId, Project::class.java)
+        project.positions?.map {
+                it -> {
+                    if(it.id == position.id) {
+                        it.employeeId = position.employeeId
+                    }
+                }
+        }
+        mongoTemplate.upsert(
+                Query.query(Criteria.where("id").`is`(projectId)),
+                        Update().pushAll("positions", arrayOf(project.positions)),
+                        Project::class.java
+                )
+    }
 }

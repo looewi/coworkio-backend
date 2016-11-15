@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 interface CustomProjectRepository {
 
     fun addPosition(projectId: String, position: Position): String?
+    fun updatePosition(projectId: String, position: Position)
 }
