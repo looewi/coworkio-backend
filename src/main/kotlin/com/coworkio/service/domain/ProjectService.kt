@@ -50,6 +50,11 @@ open class ProjectService {
         throw NotImplementedError("method is not implemented yet")
     }
 
+    fun getAllProjects(): List<ProjectDto>?
+            = projectRepository.findAll().map {
+                it -> projectDtoMapper.toDto(it)
+            }
+
     fun removeSilently(id: String): Boolean {
         val project = projectRepository.findOne(id)
         return if(project != null) {

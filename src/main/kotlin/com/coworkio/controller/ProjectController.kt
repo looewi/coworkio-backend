@@ -34,4 +34,13 @@ open class ProjectController {
         return true
     }
 
+    @RequestMapping(value = "/all", method = arrayOf(RequestMethod.GET))
+    open fun getAllProjects(): List<ProjectDto>? {
+        return projectService.getAllProjects()
+    }
+
+    @RequestMapping(value = "/{id}", method = arrayOf(RequestMethod.GET))
+    open fun getProjectById(@PathVariable id: String): ProjectDto?
+            = projectService.getProjectDtoById(id)
+
 }
