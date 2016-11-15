@@ -2,8 +2,10 @@ package com.coworkio.service.domain
 
 import com.coworkio.dto.PositionDto
 import com.coworkio.dto.ProjectDto
+import com.coworkio.dto.ProjectMinifiedVersionDto
 import com.coworkio.dto.mapper.PositionDtoMapper
 import com.coworkio.dto.mapper.ProjectDtoMapper
+import com.coworkio.dto.mapper.ProjectMinifiedVersionDtoMapper
 import com.coworkio.entity.domain.BaseInfo
 import com.coworkio.entity.domain.Project
 import com.coworkio.repository.ProjectRepository
@@ -17,6 +19,9 @@ open class ProjectService {
 
     @Autowired
     private lateinit var projectDtoMapper: ProjectDtoMapper
+
+    @Autowired
+    private lateinit var projectMinifiedVersionMapper: ProjectMinifiedVersionDtoMapper
 
     @Autowired
     private lateinit var positionDtoMapper: PositionDtoMapper
@@ -100,4 +105,13 @@ open class ProjectService {
             false
         }
     }
+
+    fun getProjectsByIds(ids: List<String>?)
+            = if(ids != null) {
+                projectRepository.getProjectsByIds(ids).map {
+                    it -> projectMinifiedVersionMapper.toDto(it)
+                }
+            } else {
+                null
+            }
 }
