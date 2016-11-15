@@ -3,11 +3,16 @@ package com.coworkio.dto.mapper
 import com.coworkio.dto.PositionDto
 import com.coworkio.dto.ProjectDto
 import com.coworkio.entity.domain.*
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
 open class ProjectDtoMapper : DtoMapper<Project, ProjectDto>{
+
+    @Autowired
+    private lateinit var positionDtoMapper: PositionDtoMapper
+
     override fun toDomain(dto: ProjectDto)
             = Project(
                 id = dto.id,
@@ -17,17 +22,7 @@ open class ProjectDtoMapper : DtoMapper<Project, ProjectDto>{
                 startDate = dto.startDate,
                 endDate = dto.endDate,
                 positions = dto.positions?.map {
-                    it -> Position(
-                        id = it.id,
-                        employeeId = it.employeeId,
-                        positionInfo = PositionInfo(
-                            title = it.title,
-                            description = it.description,
-                            type = it.type
-                        ),
-                        positionRequests = null,
-                        requiredSkillRequirements = null
-                    )
+                    it -> positionDtoMapper.toDomain(it)
                 },
                 sprints = defaultSprint(),
                 board = defaultBoard(),
@@ -42,13 +37,7 @@ open class ProjectDtoMapper : DtoMapper<Project, ProjectDto>{
             startDate = domain.startDate,
             endDate = domain.endDate,
             positions = domain.positions?.map {
-                it -> PositionDto(
-                    id = it.id,
-                    title = it.positionInfo.title,
-                    description = it.positionInfo.description,
-                    type = it.positionInfo.type,
-                    employeeId = it.employeeId
-                )
+                it -> positionDtoMapper.toDto(it)
             },
             githubLink = domain.githubLink
     )
