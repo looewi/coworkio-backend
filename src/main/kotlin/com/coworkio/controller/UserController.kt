@@ -1,6 +1,7 @@
 package com.coworkio.controller
 
 import com.coworkio.service.domain.UserService
+import com.sun.org.apache.bcel.internal.generic.GETFIELD
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -18,5 +19,9 @@ open class UserController {
     @RequestMapping(value = "/emailIsAvailable", method = arrayOf(RequestMethod.GET))
     fun emailIsAvailable(@RequestParam email: String)
             = userService.isEmailAvailable(email)
+
+    @RequestMapping(value = "/all", method = arrayOf(RequestMethod.GET))
+    fun getAllUsers()
+            = userService.findAll()
 
 }
