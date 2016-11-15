@@ -23,4 +23,12 @@ open class TaskService {
                 .filter { it -> it.projectId == projectId }
                 .map { it -> taskDtoMapper.toDto(it) }
 
+    fun saveOrUpdate(taskDto: TaskDto): TaskDto {
+        return if(taskDto.id != null) {
+            taskDtoMapper.toDto(taskRepository.save(taskDtoMapper.toDomain(taskDto)))
+        } else {
+            taskDtoMapper.toDto(taskRepository.insert(taskDtoMapper.toDomain(taskDto)))
+        }
+    }
+
 }
