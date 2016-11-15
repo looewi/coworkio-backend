@@ -24,10 +24,9 @@ open class TaskController {
         throw NotImplementedError("not implemented")
     }
 
-    @RequestMapping(value = "/all", method = arrayOf(RequestMethod.GET))
-    fun getAllTasks(): List<TaskDto>? {
-        throw NotImplementedError("not implemented")
-    }
+    @RequestMapping(value = "/{projectId}/all", method = arrayOf(RequestMethod.GET))
+    fun getAllTasks(@PathVariable projectId: String)
+            = taskService.getAllTasks(projectId)
 
     @RequestMapping(value = "/{id}", method = arrayOf(RequestMethod.GET))
     fun getTaskById(@PathVariable id: String)
