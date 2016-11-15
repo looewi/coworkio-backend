@@ -1,6 +1,8 @@
 package com.coworkio.service.domain
 
+import com.coworkio.dto.PositionDto
 import com.coworkio.dto.ProjectDto
+import com.coworkio.dto.mapper.PositionDtoMapper
 import com.coworkio.dto.mapper.ProjectDtoMapper
 import com.coworkio.entity.domain.BaseInfo
 import com.coworkio.entity.domain.Project
@@ -14,10 +16,13 @@ import java.util.*
 open class ProjectService {
 
     @Autowired
-    lateinit private var projectDtoMapper: ProjectDtoMapper
+    private lateinit var projectDtoMapper: ProjectDtoMapper
 
     @Autowired
-    lateinit private var projectRepository: ProjectRepository
+    private lateinit var positionDtoMapper: PositionDtoMapper
+
+    @Autowired
+    private lateinit var projectRepository: ProjectRepository
 
 
     fun saveOrUpdate(projectDto: ProjectDto): Project {
@@ -83,7 +88,6 @@ open class ProjectService {
         projectRepository.delete(id)
     }
 
-    fun addPosition() {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    fun addPosition(projectId: String, positionDto: PositionDto)
+            = projectRepository.addPosition(projectId, positionDtoMapper.toDomain(positionDto))
 }
