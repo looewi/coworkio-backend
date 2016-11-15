@@ -15,8 +15,14 @@ open class TaskService {
     @Autowired
     private lateinit var taskDtoMapper: TaskDtoMapper
 
-    fun getTaskById(id: String)
-            = taskDtoMapper.toDto(taskRepository.findOne(id)!!)
+    fun getTaskById(id: String): TaskDto? {
+        val task = taskRepository.findOne(id)
+        return if(task != null) {
+            taskDtoMapper.toDto(task)
+        } else {
+            null
+        }
+    }
 
     fun getAllTasks(projectId: String): List<TaskDto>
             = taskRepository.findAll()
