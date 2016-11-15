@@ -46,6 +46,12 @@ open class ProjectService {
         return project
     }
 
+    fun getPositionsByProject(projectId: String)
+            = getProjectDtoById(projectId)?.positions
+
+    fun getPositionById(projectId: String, positionId: String)
+            = getPositionsByProject(projectId)?.firstOrNull { it.id == positionId }
+
     fun getProjectsByUser(userId: String): List<ProjectDto>? {
         throw NotImplementedError("method is not implemented yet")
     }

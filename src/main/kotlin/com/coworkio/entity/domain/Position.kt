@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.core.mapping.Field
 import java.io.Serializable
 
 data class Position (
+        var id: String,
         var positionInfo: PositionInfo,
 
         @Field(value = "required_skills")

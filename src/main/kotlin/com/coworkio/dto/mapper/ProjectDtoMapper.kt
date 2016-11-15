@@ -18,6 +18,7 @@ open class ProjectDtoMapper : DtoMapper<Project, ProjectDto>{
                 endDate = dto.endDate,
                 positions = dto.positions?.map {
                     it -> Position(
+                        id = it.id,
                         employeeId = it.employeeId,
                         positionInfo = PositionInfo(
                             title = it.title,
@@ -42,6 +43,7 @@ open class ProjectDtoMapper : DtoMapper<Project, ProjectDto>{
             endDate = domain.endDate,
             positions = domain.positions?.map {
                 it -> PositionDto(
+                    id = it.id,
                     title = it.positionInfo.title,
                     description = it.positionInfo.description,
                     type = it.positionInfo.type,

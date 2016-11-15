@@ -4,9 +4,12 @@ import com.coworkio.entity.domain.enum.PositionType
 import org.hibernate.validator.constraints.NotEmpty
 import org.springframework.validation.annotation.Validated
 import java.io.Serializable
+import java.util.*
 
 @Validated
 open class PositionDto: Serializable {
+
+    var id: String = Date().time.toString()
 
     @NotEmpty
     var title: String = ""
@@ -26,7 +29,8 @@ open class PositionDto: Serializable {
 
     constructor()
 
-    constructor(title: String, description: String?, type: PositionType, employeeId: String?) {
+    constructor(id: String, title: String, description: String?, type: PositionType, employeeId: String?) {
+        this.id = id
         this.title = title
         this.description = description
         this.type = type
