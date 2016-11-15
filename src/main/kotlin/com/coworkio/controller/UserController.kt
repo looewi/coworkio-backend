@@ -3,10 +3,7 @@ package com.coworkio.controller
 import com.coworkio.service.domain.UserService
 import com.sun.org.apache.bcel.internal.generic.GETFIELD
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -23,5 +20,9 @@ open class UserController {
     @RequestMapping(value = "/all", method = arrayOf(RequestMethod.GET))
     fun getAllUsers()
             = userService.findAll()
+
+    @RequestMapping(value = "/{id}", method = arrayOf(RequestMethod.GET))
+    fun getUserById(@PathVariable id: String)
+            = userService.findById(id)
 
 }
