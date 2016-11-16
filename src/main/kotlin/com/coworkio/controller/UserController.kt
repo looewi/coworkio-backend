@@ -36,6 +36,17 @@ open class UserController {
     fun getUserById(@PathVariable id: String)
             = userService.findUserProfileById(id)
 
+    @RequestMapping(value = "/profile", method = arrayOf(RequestMethod.GET))
+    fun getProfileOfCurrentUser(): UserProfileDto? {
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
+        val user = userService.findByEmail(auth.principal as String)
+        return if (user != null) {
+            userService.findUserProfileById(user.id!!)
+        } else {
+            null
+        }
+    }
+
     @RequestMapping(value = "/update", method = arrayOf(RequestMethod.POST))
     fun updateUser(@Validated @RequestBody userProfileDto: UserProfileDto, bindingResult: BindingResult): Boolean {
         if(bindingResult.hasErrors()) {
