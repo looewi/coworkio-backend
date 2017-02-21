@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-open class UserProjectDtoMapper: DtoMapper<UserProject, UserProjectDto> {
-
-    @Autowired
-    private lateinit var positionInfoDtoMapper: PositionInfoDtoMapper
+open class UserProjectDtoMapper(
+        @Autowired val positionInfoDtoMapper: PositionInfoDtoMapper) : DtoMapper<UserProject, UserProjectDto> {
 
     override fun toDomain(dto: UserProjectDto)
             = UserProject(
