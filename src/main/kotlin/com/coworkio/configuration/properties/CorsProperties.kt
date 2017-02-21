@@ -9,5 +9,5 @@ import org.springframework.stereotype.Component
 @ConfigurationProperties(prefix = "spring.security.cors")
 open class CorsProperties {
 
-    var origins: Array<String> = Array(0, {x -> ""})
+    var origins: Array<String> = emptyArray()
 }
