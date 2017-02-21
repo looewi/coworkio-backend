@@ -16,30 +16,23 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping(AUTH_PREFIX)
-open class AuthenticationController {
+open class AuthenticationController(@Autowired val authService: AuthenticationService) {
 
     private val log = LogFactory.getLog(this.javaClass)
 
-    @Autowired
-    private lateinit var authService: AuthenticationService
-
     @RequestMapping(value = "/confirm", method = arrayOf(RequestMethod.PUT))
-    fun confirm(id: String): Boolean {
-        return authService.confirm(id)
-    }
+    fun confirm(id: String)
+            = authService.confirm(id)
 
     @RequestMapping(value = "/register", method = arrayOf(RequestMethod.POST))
-    fun register(@Valid @RequestBody user: UserDto, bindingResult: BindingResult): Boolean {
-        if(bindingResult.hasErrors()) {
-            throw BadRegistrationDataException()
-        }
-        try {
-            authService.register(user)
-        } catch (ex: BadCredentialsException) {
-            log.warn("Can't register user due to an error.", ex)
-            throw BadRegistrationDataException()
-        }
-
-        return true
-    }
+    fun register(@Valid @RequestBody user: UserDto, bindingResult: BindingResult)
+            = when(bindingResult.hasErrors()) {
+                false -> try {
+                        authService.register(user)
+                    } catch (e: BadCredentialsException) {
+                        log.warn("Can't register user due to an error.", e)
+                        throw BadRegistrationDataException()
+                    }
+                true -> throw BadRegistrationDataException()
+            }
 }
