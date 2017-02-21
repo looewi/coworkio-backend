@@ -19,32 +19,19 @@ import java.util.*
 
 @Service
 @Qualifier("authenticationService")
-open class AuthenticationService {
+open class AuthenticationService(
+        @Autowired val tokenBuilder: TokenBuilder,
+        @Autowired val tokenParser: TokenParser,
+        @Autowired val userService: UserService,
+        @Autowired val passwordEncoder: PasswordEncoder) {
 
-    private val UTF8 = "UTF-8"
     private val log = LogFactory.getLog(this.javaClass)
 
-    @Autowired
-    private lateinit var tokenBuilder: TokenBuilder
-
-    @Autowired
-    private lateinit var tokenParser: TokenParser
-
-    @Autowired
-    private lateinit var userService: UserService
-
-    @Autowired
-    private lateinit var passwordEncoder: PasswordEncoder
-
-    fun login(email: String, password: String): Authentication {
-        val user = userService.findByEmail(email)
-
-        return if (passwordEncoder.matches(password, user?.password)) {
-            UsernamePasswordAuthenticationToken(email, null)
-        } else {
-            throw BadCredentialsException("Username and password are not match.")
-        }
-    }
+    fun login(email: String, password: String): Authentication
+            = when(passwordEncoder.matches(password, userService.findByEmail(email)?.password)) {
+                true -> UsernamePasswordAuthenticationToken(email, null)
+                false ->throw BadCredentialsException("Username and password are not match.")
+            }
 
     fun register(user: UserDto) {
         if(userService.exists(user)) {
@@ -69,13 +56,17 @@ open class AuthenticationService {
         return true
     }
 
-    fun sendConfirmationEmail(user: User) {
+    private fun sendConfirmationEmail(user: User) {
         val token = tokenBuilder.generateForConfirmation(user)
         val encodedToken = Base64.getEncoder().encodeToString(token.toByteArray(charset = Charset.forName(UTF8)))
 
         //TODO: send email
     }
 
-    open fun encodePassword(password: String):String
+    private fun encodePassword(password: String):String
             = passwordEncoder.encode(password)
+
+    companion object {
+        private val UTF8 = "UTF-8"
+    }
 }
