@@ -27,3 +27,20 @@ spring:
       cors:
         origins:
           - "http://localhost:5555"
+
+
+---
+
+spring:
+  profiles: prod
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+      username: ${MONGO_USER}
+      password: ${MONGO_PWD}
+      database: heroku_p7mh74hw
+      authentication-database: heroku_p7mh74hw
+  security:
+      cors:
+        origins:
+          - ""
