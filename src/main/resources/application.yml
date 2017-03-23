@@ -23,7 +23,7 @@ spring:
   profiles: prod
   data:
     mongodb:
-      uri: ${MONGO_URI}
+      uri: mongodb://coworkio_user:cowork1o_user@ds157479.mlab.com:57479/heroku_p7mh74hw
   security:
       cors:
         origins:
