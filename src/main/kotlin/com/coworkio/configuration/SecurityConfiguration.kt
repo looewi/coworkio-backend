@@ -50,7 +50,7 @@ open class SecurityConfiguration : WebSecurityConfigurerAdapter() {
                 ?.antMatchers("$AUTH_PREFIX/**")?.permitAll()
                 ?.anyRequest()?.authenticated()?.and()
                 ?.exceptionHandling()?.authenticationEntryPoint(authenticationEntryPoint())?.and()
-//                ?.addFilterBefore(corsFilter(), ChannelProcessingFilter::class.java)
+                ?.addFilterBefore(corsFilter(), ChannelProcessingFilter::class.java)
                 ?.addFilterBefore(AuthenticationFilter(authenticationManager()), BasicAuthenticationFilter::class.java)
     }
 
