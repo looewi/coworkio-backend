@@ -16,4 +16,8 @@ open class CuratorService(
             else -> curatorRepository.findAllCuratorsByUniversityInfo(props)
         }
     }
+
+    fun addProject(curatorId: String, projectId: String) {
+        curatorRepository.addProject(curatorId, projectId)
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -35,5 +36,9 @@ open class CuratorController(
         )
     }
 
-
+    @RequestMapping(method = arrayOf(RequestMethod.POST))
+    fun addCuratorToProject(
+            @RequestParam projectId: String,
+            @RequestParam curatorId: String)
+            = curatorService.addProject(curatorId, projectId)
 }
