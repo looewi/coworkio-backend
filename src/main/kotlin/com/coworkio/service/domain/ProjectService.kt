@@ -53,7 +53,7 @@ open class ProjectService(
     fun getAllProjects(): List<ProjectDto>?
             = projectRepository.findAll().map {
                 it -> projectDtoMapper.toDto(it)
-            }
+            }.sortedBy { it.startDate }
 
     fun removeSilently(id: String): Boolean {
         val project = projectRepository.findOne(id)
