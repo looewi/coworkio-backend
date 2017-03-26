@@ -1,5 +1,6 @@
 package com.coworkio.controller
 
+import com.coworkio.API_CONSTANT
 import com.coworkio.dto.PositionDto
 import com.coworkio.service.domain.ProjectService
 import javassist.tools.web.BadHttpRequest
@@ -9,7 +10,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping(value = "/project/{projectId}/position")
+@RequestMapping(value = "$API_CONSTANT/project/{projectId}/position")
 open class PositionController(@Autowired val projectService: ProjectService) {
 
     @RequestMapping(value = "/all", method = arrayOf(RequestMethod.GET))

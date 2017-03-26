@@ -1,5 +1,6 @@
 package com.coworkio.controller
 
+import com.coworkio.API_CONSTANT
 import com.coworkio.dto.TaskDto
 import com.coworkio.service.domain.TaskService
 import com.coworkio.service.domain.UserService
@@ -13,7 +14,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping(value = "/task")
+@RequestMapping(value = "$API_CONSTANT/task")
 open class TaskController(
         @Autowired val taskService: TaskService,
         @Autowired val userService: UserService) {

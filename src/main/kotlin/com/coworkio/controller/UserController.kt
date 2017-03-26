@@ -1,5 +1,6 @@
 package com.coworkio.controller
 
+import com.coworkio.API_CONSTANT
 import com.coworkio.dto.ProjectMinifiedVersionDto
 import com.coworkio.dto.UserProfileDto
 import com.coworkio.entity.domain.UserProject
@@ -14,7 +15,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("$API_CONSTANT/user")
 open class UserController(
         @Autowired val userService: UserService,
         @Autowired val projectService: ProjectService) {
