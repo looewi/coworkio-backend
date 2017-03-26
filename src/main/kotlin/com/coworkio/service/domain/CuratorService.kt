@@ -20,4 +20,8 @@ open class CuratorService(
     fun addProject(curatorId: String, projectId: String) {
         curatorRepository.addProject(curatorId, projectId)
     }
+
+    fun deleteProject(projectId: String, curatorId: String) {
+        curatorRepository.deleteProject(curatorId, projectId)
+    }
 }

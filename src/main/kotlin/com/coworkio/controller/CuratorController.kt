@@ -41,4 +41,8 @@ open class CuratorController(
             @RequestParam projectId: String,
             @RequestParam curatorId: String)
             = curatorService.addProject(curatorId, projectId)
+
+    @RequestMapping(method = arrayOf(RequestMethod.DELETE))
+    fun deleteCuratorFromProject(@RequestParam projectId: String, @RequestParam curatorId: String)
+            = curatorService.deleteProject(projectId, curatorId)
 }

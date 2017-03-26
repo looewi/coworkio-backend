@@ -25,4 +25,12 @@ open class CustomCuratorRepositoryImpl(@Autowired val mongoTemplate: MongoTempla
                 Curator::class.java
         )
     }
+
+    override fun deleteProject(curatorId: String, projectId: String) {
+        mongoTemplate.updateFirst(
+                Query.query(Criteria.where("_id").`is`(curatorId)),
+                Update().pull("projects", projectId),
+                Curator::class.java
+        )
+    }
 }
