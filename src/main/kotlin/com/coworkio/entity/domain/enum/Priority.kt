@@ -7,14 +7,9 @@ enum class Priority(val level: Int, val value: String) {
     MAJOR(3, "MAJOR"),
     BLOCKER(4, "BLOCKER");
 
-    open fun getHigherPriority(): Priority? {
-        return getPriorityByLevel(this.level + 1)
-    }
+    fun getHigherPriority() = getPriorityByLevel(this.level + 1)
 
-    open fun getLowerPriority(): Priority? {
-        return getPriorityByLevel(this.level - 1)
-    }
+    fun getLowerPriority() = getPriorityByLevel(this.level - 1)
 
-    fun getPriorityByLevel(level: Int): Priority?
-            = Priority.values().firstOrNull { it.level == level }
+    fun getPriorityByLevel(level: Int) = Priority.values().firstOrNull { it.level == level }
 }

@@ -7,13 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-open class TaskService {
-
-    @Autowired
-    private lateinit var taskRepository: TaskRepository
-
-    @Autowired
-    private lateinit var taskDtoMapper: TaskDtoMapper
+open class TaskService(
+        @Autowired val taskRepository: TaskRepository,
+        @Autowired val taskDtoMapper: TaskDtoMapper) {
 
     fun getTaskById(id: String): TaskDto? {
         val task = taskRepository.findOne(id)
@@ -29,12 +25,9 @@ open class TaskService {
                 .filter { it -> it.projectId == projectId }
                 .map { it -> taskDtoMapper.toDto(it) }
 
-    fun saveOrUpdate(taskDto: TaskDto): TaskDto {
-        return if(taskDto.id != null) {
-            taskDtoMapper.toDto(taskRepository.save(taskDtoMapper.toDomain(taskDto)))
-        } else {
-            taskDtoMapper.toDto(taskRepository.insert(taskDtoMapper.toDomain(taskDto)))
-        }
-    }
-
+    fun saveOrUpdate(taskDto: TaskDto)
+            = when (taskDto.id) {
+                null -> taskDtoMapper.toDto(taskRepository.insert(taskDtoMapper.toDomain(taskDto)))
+                else ->taskDtoMapper.toDto(taskRepository.save(taskDtoMapper.toDomain(taskDto)))
+            }
 }

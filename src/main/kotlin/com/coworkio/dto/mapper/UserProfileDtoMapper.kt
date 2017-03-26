@@ -8,22 +8,12 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-open class UserProfileDtoMapper: DtoMapper<User, UserProfileDto> {
-
-    @Autowired
-    private lateinit var positionInfoDtoMapper: PositionInfoDtoMapper
-
-    @Autowired
-    private lateinit var socialAccountDtoMapper: SocialAccountDtoMapper
-
-    @Autowired
-    private lateinit var universityDtoMapper: UniversityDtoMapper
-
-    @Autowired
-    private lateinit var userProjectDtoMapper: UserProjectDtoMapper
-
-    @Autowired
-    private lateinit var userSkillDtoMapper: UserSkillDtoMapper
+open class UserProfileDtoMapper(
+        @Autowired val positionDtoMapper: PositionDtoMapper,
+        @Autowired val socialAccountDtoMapper: SocialAccountDtoMapper,
+        @Autowired val universityDtoMapper: UniversityDtoMapper,
+        @Autowired val userProjectDtoMapper: UserProjectDtoMapper,
+        @Autowired val userSkillDtoMapper: UserSkillDtoMapper): DtoMapper<User, UserProfileDto> {
 
     override fun toDomain(dto: UserProfileDto)
             = User(
@@ -33,28 +23,21 @@ open class UserProfileDtoMapper: DtoMapper<User, UserProfileDto> {
                 middleName = dto.middleName,
                 lastName = dto.lastName,
                 university = dto.university.let {
-                    it -> if(it != null) {
-                            universityDtoMapper.toDomain(it)
-                        } else {
-                            null
-                        }
+                    when (it) {
+                        null -> null
+                        else -> universityDtoMapper.toDomain(it)
+                    }
                 },
                 accountConfirmed = dto.accountConfirmed,
-                accounts = dto.accounts?.map {
-                    it -> socialAccountDtoMapper.toDomain(it)
-                },
+                accounts = dto.accounts?.map { socialAccountDtoMapper.toDomain(it) },
                 email = dto.email,
                 password = dto.password,
                 github = dto.github,
                 role = dto.role,
-                projects = dto.projects?.map {
-                    it -> userProjectDtoMapper.toDomain(it)
-                },
+                projects = dto.projects?.map { userProjectDtoMapper.toDomain(it) },
                 phoneNumber = dto.phoneNumber,
                 photoUrl = dto.photoUrl,
-                skills = dto.skills?.map {
-                    it -> userSkillDtoMapper.toDomain(it)
-                },
+                skills = dto.skills?.map { userSkillDtoMapper.toDomain(it) },
                 notificationPreferences = dto.notificationPreferences
     )
 
@@ -65,28 +48,21 @@ open class UserProfileDtoMapper: DtoMapper<User, UserProfileDto> {
                 middleName = domain.middleName,
                 lastName = domain.lastName,
                 university = domain.university.let {
-                    it -> if(it != null) {
-                        universityDtoMapper.toDto(it)
-                    } else {
-                        null
+                    when (it) {
+                        null -> null
+                        else -> universityDtoMapper.toDto(it)
                     }
                 },
                 accountConfirmed = domain.accountConfirmed,
-                accounts = domain.accounts?.map {
-                    it -> socialAccountDtoMapper.toDto(it)
-                },
+                accounts = domain.accounts?.map { socialAccountDtoMapper.toDto(it) },
                 email = domain.email,
                 password = domain.password,
                 github = domain.github,
                 role = domain.role,
-                projects = domain.projects?.map {
-                    it -> userProjectDtoMapper.toDto(it)
-                },
+                projects = domain.projects?.map { userProjectDtoMapper.toDto(it) },
                 phoneNumber = domain.phoneNumber,
                 photoUrl = domain.photoUrl,
-                skills = domain.skills?.map {
-                    it -> userSkillDtoMapper.toDto(it)
-                },
+                skills = domain.skills?.map { userSkillDtoMapper.toDto(it) },
                 notificationPreferences = domain.notificationPreferences
             )
 

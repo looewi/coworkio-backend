@@ -11,10 +11,7 @@ import org.springframework.stereotype.Repository
 
 
 @Repository
-open class ProjectRepositoryImpl: CustomProjectRepository {
-
-    @Autowired
-    private lateinit var mongoTemplate: MongoTemplate
+open class ProjectRepositoryImpl(@Autowired val mongoTemplate: MongoTemplate): CustomProjectRepository {
 
     override fun addPosition(projectId: String, position: Position)
             = mongoTemplate.upsert(
@@ -27,9 +24,8 @@ open class ProjectRepositoryImpl: CustomProjectRepository {
         val project = mongoTemplate.findById(projectId, Project::class.java)
         if(project.positions != null) {
             project.positions = project.positions!!.map {
-                it ->
-                if (it.id == position.id) {
-                    it.employeeId = position.employeeId
+                when (it.id) {
+                    position.id -> it.employeeId = position.employeeId
                 }
                 it
             }
@@ -47,6 +43,4 @@ open class ProjectRepositoryImpl: CustomProjectRepository {
                 Query.query(Criteria.where("id").`in`(projectIds)),
                 Project::class.java
             )
-
-
 }

@@ -11,32 +11,21 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Component
 
 @Component
-open class UsernameAndPasswordAuthenticationProvider : AuthenticationProvider{
-
-    @Autowired
-    private lateinit var tokenBuilder: TokenBuilder
-
-    @Autowired
-    private lateinit var authService: AuthenticationService
+open class UsernameAndPasswordAuthenticationProvider(
+        @Autowired val tokenBuilder: TokenBuilder,
+        @Autowired val authService: AuthenticationService) : AuthenticationProvider{
 
     override fun authenticate(authentication: Authentication?): Authentication? {
         val email = authentication?.principal?.toString()
         val password = authentication?.credentials?.toString()
-
         if (email == null || password == null) {
             throw BadCredentialsException("Invalid user credentials.")
         }
-
         val auth = authService.login(email, password)
         val token = tokenBuilder.generateForAuthentication(auth)
-
-        val resultAuth = PreAuthenticatedAuthenticationToken(token, null)
-        resultAuth.isAuthenticated = true
-
-        return resultAuth
+        return PreAuthenticatedAuthenticationToken(token, null).apply { this.isAuthenticated = true }
     }
 
-    override fun supports(authenticationClass: Class<*>?): Boolean {
-        return UsernamePasswordAuthenticationToken::class.java == authenticationClass
-    }
+    override fun supports(authenticationClass: Class<*>?)
+            = UsernamePasswordAuthenticationToken::class.java == authenticationClass
 }
