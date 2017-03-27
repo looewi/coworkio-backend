@@ -10,28 +10,27 @@ import org.springframework.data.mongodb.core.query.Update
 import org.springframework.stereotype.Repository
 import java.util.*
 
+fun MongoTemplate.simpleUpdateMethod(id: String, key: String, value: Any?, entityClass: Class<*>) = {
+    this.updateFirst(
+            Query.query(Criteria.where("_id").`is`(id)),
+            Update.update(key, value),
+            entityClass
+    )
+}
+
 @Repository
 open class CustomUserReposioryImpl(@Autowired val mongoTemplate: MongoTemplate): CustomUserRepository {
 
     override fun changePassword(userId: String, newPwd: String) {
-        mongoTemplate.updateFirst(
-                Query.query(Criteria.where("_id").`is`(userId)),
-                Update.update("password", newPwd),
-                User::class.java)
+        mongoTemplate.simpleUpdateMethod(userId, "password", newPwd as Any, User::class.java)
     }
 
     override fun changeProfilePicture(userId: String, url: String) {
-        mongoTemplate.updateFirst(
-                Query.query(Criteria.where("_id").`is`(userId)),
-                Update.update("photoUrl", url),
-                User::class.java)
+        mongoTemplate.simpleUpdateMethod(userId, "photoUrl", url as Any, User::class.java)
     }
 
     override fun deleteProfilePicture(userId: String) {
-        mongoTemplate.updateFirst(
-                Query.query(Criteria.where("_id").`is`(userId)),
-                Update.update("photoUrl", null),
-                User::class.java)
+        mongoTemplate.simpleUpdateMethod(userId, "photoUrl", null, User::class.java)
     }
 
     override fun approveSkill(userId: String, skillId: String, approvedBy: String) {
