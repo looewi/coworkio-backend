@@ -1,6 +1,5 @@
 package com.coworkio.dto.mapper
 
-import com.coworkio.dto.PositionDto
 import com.coworkio.dto.ProjectDto
 import com.coworkio.entity.domain.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,9 +20,7 @@ open class ProjectDtoMapper : DtoMapper<Project, ProjectDto>{
                 description = dto.description,
                 startDate = dto.startDate,
                 endDate = dto.endDate,
-                positions = dto.positions?.map {
-                    it -> positionDtoMapper.toDomain(it)
-                },
+                positions = dto.positions?.map { positionDtoMapper.toDomain(it) },
                 sprints = defaultSprint(),
                 board = defaultBoard(),
                 githubLink = dto.githubLink
@@ -36,9 +33,7 @@ open class ProjectDtoMapper : DtoMapper<Project, ProjectDto>{
             description = domain.description,
             startDate = domain.startDate,
             endDate = domain.endDate,
-            positions = domain.positions?.map {
-                it -> positionDtoMapper.toDto(it)
-            },
+            positions = domain.positions?.map { positionDtoMapper.toDto(it) },
             githubLink = domain.githubLink
     )
 

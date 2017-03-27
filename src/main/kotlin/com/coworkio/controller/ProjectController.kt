@@ -9,13 +9,9 @@ import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
-
 @RestController
 @RequestMapping(value = "/project")
-open class ProjectController {
-
-    @Autowired
-    private lateinit var projectService: ProjectService
+open class ProjectController(@Autowired val projectService: ProjectService) {
 
     @RequestMapping(value = "/create", method = arrayOf(RequestMethod.POST))
     fun createProject(@Validated @RequestBody projectDto: ProjectDto, bindingResult: BindingResult): ResponseEntity<String?> {
@@ -27,9 +23,7 @@ open class ProjectController {
     }
 
     @RequestMapping(value = "/all", method = arrayOf(RequestMethod.GET))
-    fun getAllProjects(): List<ProjectDto>? {
-        return projectService.getAllProjects()
-    }
+    fun getAllProjects() = projectService.getAllProjects()
 
     @RequestMapping(value = "/{id}", method = arrayOf(RequestMethod.GET))
     fun getProjectById(@PathVariable id: String): ProjectDto?

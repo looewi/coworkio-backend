@@ -13,48 +13,32 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
-
 @Service
-open class ProjectService {
+open class ProjectService(
+        @Autowired val projectDtoMapper: ProjectDtoMapper,
+        @Autowired val projectMinifiedVersionMapper: ProjectMinifiedVersionDtoMapper,
+        @Autowired val positionDtoMapper: PositionDtoMapper,
+        @Autowired val projectRepository: ProjectRepository) {
 
-    @Autowired
-    private lateinit var projectDtoMapper: ProjectDtoMapper
+    fun saveOrUpdate(projectDto: ProjectDto) : Project
+            = saveOrUpdate(projectDtoMapper.toDomain(projectDto))
 
-    @Autowired
-    private lateinit var projectMinifiedVersionMapper: ProjectMinifiedVersionDtoMapper
-
-    @Autowired
-    private lateinit var positionDtoMapper: PositionDtoMapper
-
-    @Autowired
-    private lateinit var projectRepository: ProjectRepository
-
-
-    fun saveOrUpdate(projectDto: ProjectDto): Project {
-        val project = projectDtoMapper.toDomain(projectDto)
-        return saveOrUpdate(project)
-    }
-
-    fun saveOrUpdate(project: Project)
-            = if(project.id != null) {
-                projectRepository.save(project)
-            } else {
-                projectRepository.insert(project)
+    fun saveOrUpdate(project: Project) : Project
+            = when (project.id) {
+                null -> projectRepository.insert(project)
+                else -> projectRepository.save(project)
             }
 
     fun getProjectDtoById(id: String): ProjectDto? {
         val project = projectRepository.findOne(id)
-        return if(project != null) {
-            projectDtoMapper.toDto(project)
-        }  else {
-            null
+        return when(project) {
+            null -> null
+            else -> projectDtoMapper.toDto(project)
         }
     }
 
-    fun getProjectById(id: String): Project? {
-        val project = projectRepository.findOne(id)
-        return project
-    }
+    fun getProjectById(id: String): Project?
+            = projectRepository.findOne(id)
 
     fun getPositionsByProject(projectId: String)
             = getProjectDtoById(projectId)?.positions
@@ -73,24 +57,23 @@ open class ProjectService {
 
     fun removeSilently(id: String): Boolean {
         val project = projectRepository.findOne(id)
-        return if(project != null) {
-            project.baseInfo = BaseInfo(Date(), true)
-            projectRepository.save(project)
-            true
-        } else {
-            false
+        return when (project) {
+            null -> false
+            else -> {
+                project.baseInfo = BaseInfo(Date(), true)
+                projectRepository.save(project)
+                true
+            }
         }
     }
 
     fun removeSilently(projectDto: ProjectDto): Boolean {
-        val project = projectDtoMapper.toDomain(projectDto)
-        project.baseInfo = BaseInfo(Date(), true)
-        projectRepository.save(project)
+        projectRepository.save(projectDtoMapper.toDomain(projectDto)
+                .apply { this.baseInfo = BaseInfo(Date(), true) })
         return true
     }
 
-    fun delete(id: String)
-            = projectRepository.delete(id)
+    fun delete(id: String) = projectRepository.delete(id)
 
     fun addPosition(projectId: String, positionDto: PositionDto)
             = projectRepository.addPosition(projectId, positionDtoMapper.toDomain(positionDto))
@@ -107,11 +90,8 @@ open class ProjectService {
     }
 
     fun getProjectsByIds(ids: List<String>?)
-            = if(ids != null) {
-                projectRepository.getProjectsByIds(ids).map {
-                    it -> projectMinifiedVersionMapper.toDto(it)
-                }
-            } else {
-                null
+            = when (ids) {
+                null -> null
+                else -> projectRepository.getProjectsByIds(ids).map { it -> projectMinifiedVersionMapper.toDto(it) }
             }
 }

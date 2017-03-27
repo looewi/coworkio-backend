@@ -13,13 +13,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-open class UserDtoMapper : DtoMapper<User, UserDto> {
-
-    private val BCRYPT_STRENGTH = 15
-
-    @Autowired
-    @Qualifier("authenticationService")
-    private lateinit var authService: AuthenticationService
+open class UserDtoMapper(@Autowired @Qualifier val authService: AuthenticationService) : DtoMapper<User, UserDto> {
 
     override fun toDomain(dto: UserDto)
             = User(
@@ -45,4 +39,7 @@ open class UserDtoMapper : DtoMapper<User, UserDto> {
     override fun toDto(domain: User)
             = UserDto(domain.email, domain.password, domain.firstName, domain.lastName)
 
+    companion object {
+        private val BCRYPT_STRENGTH = 15
+    }
 }

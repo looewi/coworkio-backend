@@ -19,19 +19,9 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class AuthenticationFilter() : GenericFilterBean() {
-
-    private val EMAIL_PARAMETER = "email"
-    private val PASSWORD_PARAMETER = "password"
-    private val TOKEN_HEADER = "X-Auth-Token"
+class AuthenticationFilter(val authenticationManager: AuthenticationManager?) : GenericFilterBean() {
 
     private val log = LogFactory.getLog(this.javaClass)
-
-    private var authenticationManager: AuthenticationManager? = null
-
-    constructor(authenticationManager: AuthenticationManager) : this() {
-        this.authenticationManager = authenticationManager
-    }
 
     override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
         val httpRequest = request as HttpServletRequest
@@ -69,12 +59,10 @@ class AuthenticationFilter() : GenericFilterBean() {
         }
     }
 
-    private fun postToAuthenticate(request: HttpServletRequest, path: String): Boolean {
-        return AUTHENTICATE_URL.equals(path, true) && HTTP_POST.equals(request.method, true)
-    }
+    private fun postToAuthenticate(request: HttpServletRequest, path: String)
+            = AUTHENTICATE_URL.equals(path, true) && HTTP_POST.equals(request.method, true)
 
-    private fun processEmailPasswordAuthentication(response: HttpServletResponse, username: String?, password:
-    String?) {
+    private fun processEmailPasswordAuthentication(response: HttpServletResponse, username: String?, password: String?) {
         val resultOfAuthentication = tryToAuthenticateWithUsernameAndPassword(username, password)
         SecurityContextHolder.getContext().authentication = resultOfAuthentication
 
@@ -87,14 +75,11 @@ class AuthenticationFilter() : GenericFilterBean() {
         response.writer.print(tokenJsonResponse)
     }
 
+    private fun processTokenAuthentication(token: String?)
+            = apply{ SecurityContextHolder.getContext().authentication = tryToAuthenticateWithToken(token) }
+
     private fun tryToAuthenticateWithUsernameAndPassword(username: String?, password: String?)
             = tryToAuthenticate(UsernamePasswordAuthenticationToken(username, password))
-
-    private fun processTokenAuthentication(token: String?) {
-        val resultOfAuthentication = tryToAuthenticateWithToken(token)
-
-        SecurityContextHolder.getContext().authentication = resultOfAuthentication
-    }
 
     private fun tryToAuthenticateWithToken(token: String?)
             = tryToAuthenticate(PreAuthenticatedAuthenticationToken(token, null))
@@ -105,10 +90,14 @@ class AuthenticationFilter() : GenericFilterBean() {
         if (responseAuthentication == null || !responseAuthentication.isAuthenticated) {
             throw InternalAuthenticationServiceException("Unable to authenticate user for provided credentials")
         }
-
         log.debug("User successfully authenticated.")
-
         return responseAuthentication
+    }
+
+    companion object {
+        private val EMAIL_PARAMETER = "email"
+        private val PASSWORD_PARAMETER = "password"
+        private val TOKEN_HEADER = "X-Auth-Token"
     }
 }
 

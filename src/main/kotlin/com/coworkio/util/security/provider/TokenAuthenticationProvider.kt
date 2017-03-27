@@ -9,22 +9,16 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.stereotype.Component
 
 @Component
-open class TokenAuthenticationProvider : AuthenticationProvider{
-
-    @Autowired
-    private lateinit var tokenParser: TokenParser
+open class TokenAuthenticationProvider(@Autowired val tokenParser: TokenParser) : AuthenticationProvider{
 
     override fun authenticate(authentication: Authentication?): Authentication? {
         val token = authentication?.principal
-
         if (token == null || (token as String).isEmpty()) {
             throw BadCredentialsException("invalid token provided")
         }
-
         return tokenParser.getAuthenticationFromToken(token)
     }
 
-    override fun supports(authenticationClass: Class<*>?): Boolean {
-        return PreAuthenticatedAuthenticationToken::class.java == authenticationClass
-    }
+    override fun supports(authenticationClass: Class<*>?)
+            = PreAuthenticatedAuthenticationToken::class.java == authenticationClass
 }
