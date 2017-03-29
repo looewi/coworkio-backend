@@ -1,5 +1,6 @@
 package com.coworkio.controller
 
+import com.coworkio.API_CONSTANT
 import com.coworkio.dto.ProjectDto
 import com.coworkio.service.domain.ProjectService
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
-@RequestMapping(value = "/project")
+@RequestMapping(value = "$API_CONSTANT/project")
 open class ProjectController {
 
     @Autowired
