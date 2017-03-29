@@ -17,16 +17,17 @@ open class PositionController {
     private lateinit var projectService: ProjectService
 
     @RequestMapping(value = "/all", method = arrayOf(RequestMethod.GET))
-    open fun getAllPositionsOfProject(@PathVariable projectId: String)
+    fun getAllPositionsOfProject(@PathVariable projectId: String)
             = projectService.getPositionsByProject(projectId)
 
     @RequestMapping(value = "/{positionId}", method = arrayOf(RequestMethod.GET))
-    open fun getPositionById(@PathVariable projectId: String, @PathVariable positionId: String)
+    fun getPositionById(@PathVariable projectId: String, @PathVariable positionId: String)
             = projectService.getPositionById(projectId, positionId)
 
     @RequestMapping(value = "/add", method = arrayOf(RequestMethod.POST))
-    open fun addPosition(@Validated @RequestBody positionDto: PositionDto, @PathVariable projectId: String,
-                         bindingResult: BindingResult): String? {
+    fun addPosition(@Validated @RequestBody positionDto: PositionDto,
+                    @PathVariable projectId: String,
+                    bindingResult: BindingResult): String? {
         if(bindingResult.hasErrors()) {
             throw BadHttpRequest(Exception("Position data is invalid"))
         }
@@ -34,7 +35,9 @@ open class PositionController {
     }
 
     @RequestMapping(value = "/{positionId}/employ", method = arrayOf(RequestMethod.POST))
-    open fun setUserToPosition(@PathVariable projectId: String, @PathVariable positionId: String, @RequestParam userId: String)
+    fun setUserToPosition(@PathVariable projectId: String,
+                          @PathVariable positionId: String,
+                          @RequestParam userId: String)
             = projectService.setUserToPosition(projectId, positionId, userId)
 
 }

@@ -25,20 +25,20 @@ open class TaskController {
 
     @RequestMapping(value = "/add", method = arrayOf(RequestMethod.POST))
     fun addTaskToProject(@Validated @RequestBody taskDto: TaskDto, bindingResult: BindingResult): String? {
-        val auth: Authentication = SecurityContextHolder.getContext().authentication
         if(bindingResult.hasErrors()) {
             throw BadHttpRequest()
         }
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
         taskDto.authorId = userService.findByEmail(auth.principal as String)?.id!!
         return taskService.saveOrUpdate(taskDto).id
     }
 
     @RequestMapping(value = "/update", method = arrayOf(RequestMethod.POST))
     fun updateTask(@Validated @RequestBody taskDto: TaskDto, bindingResult: BindingResult): Int {
-        val auth: Authentication = SecurityContextHolder.getContext().authentication
         if(bindingResult.hasErrors()) {
             throw BadHttpRequest()
         }
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
         taskDto.authorId = userService.findByEmail(auth.principal as String)?.id!!
         taskService.saveOrUpdate(taskDto)
         return HttpStatus.SC_OK

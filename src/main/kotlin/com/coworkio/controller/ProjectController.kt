@@ -10,9 +10,9 @@ import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
-
 @RestController
 @RequestMapping(value = "$API_CONSTANT/project")
+
 open class ProjectController {
 
     @Autowired
@@ -28,9 +28,7 @@ open class ProjectController {
     }
 
     @RequestMapping(value = "/all", method = arrayOf(RequestMethod.GET))
-    fun getAllProjects(): List<ProjectDto>? {
-        return projectService.getAllProjects()
-    }
+    fun getAllProjects() = projectService.getAllProjects()
 
     @RequestMapping(value = "/{id}", method = arrayOf(RequestMethod.GET))
     fun getProjectById(@PathVariable id: String): ProjectDto?
