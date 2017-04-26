@@ -93,9 +93,7 @@ open class ProjectService {
 
     fun getProjectsByIds(ids: List<String>?)
             = if(ids != null) {
-                projectRepository.getProjectsByIds(ids).map {
-                    it -> projectMinifiedVersionMapper.toDto(it)
-                }
+                projectRepository.getProjectsByIds(ids)
             } else {
                 null
             }

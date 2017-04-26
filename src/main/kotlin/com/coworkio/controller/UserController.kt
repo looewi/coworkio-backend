@@ -1,8 +1,10 @@
 package com.coworkio.controller
 
 import com.coworkio.API_CONSTANT
+import com.coworkio.dto.DashboardProjectDto
 import com.coworkio.dto.ProjectMinifiedVersionDto
 import com.coworkio.dto.UserProfileDto
+import com.coworkio.entity.domain.Project
 import com.coworkio.entity.domain.UserProject
 import com.coworkio.service.domain.ProjectService
 import com.coworkio.service.domain.UserService
@@ -65,12 +67,14 @@ open class UserController {
     }
 
     @RequestMapping(value = "/getProjects", method = arrayOf(RequestMethod.GET))
-    fun getUserProjects(): List<ProjectMinifiedVersionDto>? {
+    fun getUserProjects(): List<DashboardProjectDto>? {
         val auth: Authentication = SecurityContextHolder.getContext().authentication
         val user = userService.findByEmail(auth.principal as String)
         return when(user) {
             null -> null
-            else -> projectService.getProjectsByIds(user.projects?.map(UserProject::projectId))
+            else -> user.projects?.map {
+                DashboardProjectDto(projectService.getProjectById(it.projectId)!!, it.isCurrent)
+            }
         }
     }
 
