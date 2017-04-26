@@ -1,6 +1,5 @@
 package com.coworkio.dto
 
-import com.coworkio.entity.domain.enum.PositionType
 import org.hibernate.validator.constraints.NotEmpty
 import org.springframework.validation.annotation.Validated
 import java.io.Serializable
@@ -17,7 +16,7 @@ open class PositionDto: Serializable {
     var description: String? = ""
 
 //    TODO: now is default to FULLSTACK, will be configurable later
-    var type: PositionType = PositionType.FULLSTACK
+    var type: String = "FULLSTACK"
 
 //    TODO: now is not used at all, set to null in the db, will be configurable later
 //    var requiredSkills: List<SkillRequirement>?
@@ -29,7 +28,7 @@ open class PositionDto: Serializable {
 
     constructor()
 
-    constructor(id: String, title: String, description: String?, type: PositionType, employeeId: String?) {
+    constructor(id: String, title: String, description: String?, type: String, employeeId: String?) {
         this.id = id
         this.title = title
         this.description = description

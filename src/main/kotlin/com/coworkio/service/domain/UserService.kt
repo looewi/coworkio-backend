@@ -3,7 +3,10 @@ package com.coworkio.service.domain
 import com.coworkio.dto.UserDto
 import com.coworkio.dto.UserProfileDto
 import com.coworkio.dto.mapper.UserProfileDtoMapper
+import com.coworkio.entity.domain.PositionInfo
 import com.coworkio.entity.domain.User
+import com.coworkio.entity.domain.UserProject
+import com.coworkio.entity.domain.enum.PositionType
 import com.coworkio.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -21,9 +24,6 @@ open class UserService {
 
     fun count(): Long
             = userRepository.count()
-
-    fun delete(id: String)
-            = userRepository.delete(id)
 
     fun delete(user: User)
             = userRepository.delete(user)
@@ -56,14 +56,23 @@ open class UserService {
     fun isEmailAvailable(email: String)
             = userRepository.findUserByEmail(email) == null
 
-    fun removeSilently(user: User) {
-        user.baseInfo.isDeleted = true
-        saveOrUpdate(user)
-    }
-
     fun exists(user: UserDto)
             = userRepository.findUserByEmailAndPassword(user.email, user.password) != null
 
     fun findByEmail(email: String)
             = userRepository.findUserByEmail(email)
+
+    fun addUserPosition(
+            projectId: String,
+            position: PositionInfo = PositionInfo(title = "Project creator", type = "OTHER", description = "default position"),
+            userEmail: String) {
+        userRepository.addPosition(
+                UserProject(
+                        projectId = projectId,
+                        positionInfo = position,
+                        isCurrent = true,
+                        startDate = Date(),
+                        endDate = null
+                ), userEmail)
+    }
 }

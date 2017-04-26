@@ -5,6 +5,7 @@ import java.io.Serializable
 import java.util.*
 
 data class Sprint(
+        var id: Int,
 
         @Field(value = "start_date")
         var startDate: Date?,

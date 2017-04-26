@@ -1,6 +1,5 @@
 package com.coworkio.dto
 
-import com.coworkio.entity.domain.enum.PositionType
 import org.springframework.validation.annotation.Validated
 import java.io.Serializable
 import javax.validation.constraints.NotNull
@@ -13,11 +12,11 @@ open class PositionInfoDto: Serializable {
 
     var description: String? = null
 
-    var type: PositionType = PositionType.FULLSTACK
+    var type: String = ""
 
     constructor()
 
-    constructor(title: String, description: String?, type: PositionType) {
+    constructor(title: String, description: String?, type: String) {
         this.title = title
         this.description = description
         this.type = type

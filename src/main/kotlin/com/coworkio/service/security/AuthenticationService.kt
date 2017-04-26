@@ -51,8 +51,7 @@ open class AuthenticationService {
             throw BadCredentialsException("provided user already exists")
         }
         val userDomain = UserDtoMapper().toDomain(user)
-        userService.saveOrUpdate(userDomain)
-        sendConfirmationEmail(userDomain)
+        userService.saveOrUpdate(userDomain.copy(password = encodePassword(userDomain.password)))
     }
 
     fun confirm(encodedToken: String): Boolean {
@@ -67,13 +66,6 @@ open class AuthenticationService {
         }
 
         return true
-    }
-
-    fun sendConfirmationEmail(user: User) {
-        val token = tokenBuilder.generateForConfirmation(user)
-        val encodedToken = Base64.getEncoder().encodeToString(token.toByteArray(charset = Charset.forName(UTF8)))
-
-        //TODO: send email
     }
 
     open fun encodePassword(password: String):String

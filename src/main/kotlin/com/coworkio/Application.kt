@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan
 
 @EnableCaching
 @SpringBootApplication
-@ComponentScan("com.coworkio")
 @EnableAutoConfiguration
 open class Application
 

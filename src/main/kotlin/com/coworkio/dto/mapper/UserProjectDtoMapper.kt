@@ -1,7 +1,10 @@
 package com.coworkio.dto.mapper
 
 import com.coworkio.dto.UserProjectDto
+import com.coworkio.entity.domain.Position
+import com.coworkio.entity.domain.PositionInfo
 import com.coworkio.entity.domain.UserProject
+import com.coworkio.entity.domain.enum.PositionType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

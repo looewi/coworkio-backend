@@ -1,7 +1,7 @@
 package com.scivantage.service
 
 import com.coworkio.dto.PositionDto
-import com.coworkio.dto.ProjectDto
+import com.coworkio.dto.NewProjectDto
 import com.coworkio.entity.domain.Project
 import com.coworkio.entity.domain.enum.PositionType
 import com.coworkio.service.domain.ProjectService
@@ -22,7 +22,7 @@ class ProjectServiceTest: AbstractTestCase() {
 
     @Before
     fun populateData() {
-        val projectDto = ProjectDto(
+        val projectDto = NewProjectDto(
                 id = null,
                 title = "test project",
                 description = "new project created by coworkio team",
@@ -49,7 +49,7 @@ class ProjectServiceTest: AbstractTestCase() {
                 id = Date().time.toString(),
                 title = "new position",
                 description = "description",
-                type = PositionType.FRONTEND,
+                type = "FRONTEND",
                 employeeId = null
         )
         projectService.addPosition(project.id!!, position)
@@ -60,7 +60,7 @@ class ProjectServiceTest: AbstractTestCase() {
                 id = Date().time.toString(),
                 title = "new position2",
                 description = "description2",
-                type = PositionType.FRONTEND,
+                type = "FRONTEND",
                 employeeId = null
         )
 
@@ -75,7 +75,7 @@ class ProjectServiceTest: AbstractTestCase() {
                 id = Date().time.toString(),
                 title = "new position",
                 description = "description",
-                type = PositionType.FRONTEND,
+                type = "FRONTEND",
                 employeeId = null
         )
         projectService.addPosition(project.id!!, position)
@@ -84,7 +84,7 @@ class ProjectServiceTest: AbstractTestCase() {
                 id = Date().time.toString(),
                 title = "new position2",
                 description = "description2",
-                type = PositionType.FRONTEND,
+                type = "FRONTEND",
                 employeeId = null
         )
 

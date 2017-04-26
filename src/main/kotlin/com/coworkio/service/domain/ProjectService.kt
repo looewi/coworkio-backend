@@ -1,7 +1,7 @@
 package com.coworkio.service.domain
 
 import com.coworkio.dto.PositionDto
-import com.coworkio.dto.ProjectDto
+import com.coworkio.dto.NewProjectDto
 import com.coworkio.dto.ProjectMinifiedVersionDto
 import com.coworkio.dto.mapper.PositionDtoMapper
 import com.coworkio.dto.mapper.ProjectDtoMapper
@@ -30,8 +30,8 @@ open class ProjectService {
     private lateinit var projectRepository: ProjectRepository
 
 
-    fun saveOrUpdate(projectDto: ProjectDto): Project {
-        val project = projectDtoMapper.toDomain(projectDto)
+    fun saveOrUpdate(newProjectDto: NewProjectDto): Project {
+        val project = projectDtoMapper.toDomain(newProjectDto)
         return saveOrUpdate(project)
     }
 
@@ -42,7 +42,7 @@ open class ProjectService {
                 projectRepository.insert(project)
             }
 
-    fun getProjectDtoById(id: String): ProjectDto? {
+    fun getProjectDtoById(id: String): NewProjectDto? {
         val project = projectRepository.findOne(id)
         return if(project != null) {
             projectDtoMapper.toDto(project)
@@ -62,11 +62,7 @@ open class ProjectService {
     fun getPositionById(projectId: String, positionId: String)
             = getPositionsByProject(projectId)?.firstOrNull { it.id == positionId }
 
-    fun getProjectsByUser(userId: String): List<ProjectDto>? {
-        throw NotImplementedError("method is not implemented yet")
-    }
-
-    fun getAllProjects(): List<ProjectDto>?
+    fun getAllProjects(): List<NewProjectDto>?
             = projectRepository.findAll().map {
                 it -> projectDtoMapper.toDto(it)
             }
@@ -80,13 +76,6 @@ open class ProjectService {
         } else {
             false
         }
-    }
-
-    fun removeSilently(projectDto: ProjectDto): Boolean {
-        val project = projectDtoMapper.toDomain(projectDto)
-        project.baseInfo = BaseInfo(Date(), true)
-        projectRepository.save(project)
-        return true
     }
 
     fun delete(id: String)
