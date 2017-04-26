@@ -51,10 +51,8 @@ open class ProjectService {
         }
     }
 
-    fun getProjectById(id: String): Project? {
-        val project = projectRepository.findOne(id)
-        return project
-    }
+    fun getProjectById(id: String): Project?
+            = projectRepository.findOne(id)
 
     fun getPositionsByProject(projectId: String)
             = getProjectDtoById(projectId)?.positions
@@ -62,10 +60,8 @@ open class ProjectService {
     fun getPositionById(projectId: String, positionId: String)
             = getPositionsByProject(projectId)?.firstOrNull { it.id == positionId }
 
-    fun getAllProjects(): List<NewProjectDto>?
-            = projectRepository.findAll().map {
-                it -> projectDtoMapper.toDto(it)
-            }
+    fun getAllProjects(): List<Project>?
+            = projectRepository.findAll()
 
     fun removeSilently(id: String): Boolean {
         val project = projectRepository.findOne(id)

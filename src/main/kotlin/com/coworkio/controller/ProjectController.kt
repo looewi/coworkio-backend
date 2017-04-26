@@ -3,6 +3,7 @@ package com.coworkio.controller
 import com.coworkio.API_CONSTANT
 import com.coworkio.controller.exception.ProjectNotCreatedException
 import com.coworkio.dto.NewProjectDto
+import com.coworkio.entity.domain.Project
 import com.coworkio.service.domain.ProjectService
 import com.coworkio.service.domain.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -44,7 +45,7 @@ open class ProjectController {
     fun getAllProjects() = projectService.getAllProjects()
 
     @RequestMapping(value = "/{id}", method = arrayOf(RequestMethod.GET))
-    fun getProjectById(@PathVariable id: String): NewProjectDto?
-            = projectService.getProjectDtoById(id)
+    fun getProjectById(@PathVariable id: String): Project?
+            = projectService.getProjectById(id)
 
 }
