@@ -24,24 +24,23 @@ open class TaskController {
     private lateinit var userService: UserService
 
     @RequestMapping(value = "/add", method = arrayOf(RequestMethod.POST))
-    fun addTaskToProject(@Validated @RequestBody taskDto: TaskDto, bindingResult: BindingResult): String? {
+    fun addTaskToProject(@Validated @RequestBody taskDto: TaskDto, bindingResult: BindingResult): TaskDto? {
         if(bindingResult.hasErrors()) {
             throw BadHttpRequest()
         }
         val auth: Authentication = SecurityContextHolder.getContext().authentication
         taskDto.authorId = userService.findByEmail(auth.principal as String)?.id!!
-        return taskService.saveOrUpdate(taskDto).id
+        return taskService.saveOrUpdate(taskDto)
     }
 
     @RequestMapping(value = "/update", method = arrayOf(RequestMethod.POST))
-    fun updateTask(@Validated @RequestBody taskDto: TaskDto, bindingResult: BindingResult): Int {
+    fun updateTask(@Validated @RequestBody taskDto: TaskDto, bindingResult: BindingResult): TaskDto? {
         if(bindingResult.hasErrors()) {
             throw BadHttpRequest()
         }
         val auth: Authentication = SecurityContextHolder.getContext().authentication
         taskDto.authorId = userService.findByEmail(auth.principal as String)?.id!!
-        taskService.saveOrUpdate(taskDto)
-        return HttpStatus.SC_OK
+        return taskService.saveOrUpdate(taskDto)
     }
 
     @RequestMapping(value = "/{projectId}/all", method = arrayOf(RequestMethod.GET))
