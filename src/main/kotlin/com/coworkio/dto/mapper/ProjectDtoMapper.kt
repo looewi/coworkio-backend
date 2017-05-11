@@ -42,11 +42,11 @@ open class ProjectDtoMapper : DtoMapper<Project, NewProjectDto>{
     private fun defaultBoard()
             = Board(
                 statuses = listOf(
-                    Status(1, "New"),
-                    Status(2, "Reopened"),
-                    Status(3, "In progress"),
-                    Status(4, "In review"),
-                    Status(5, "Closed")
+                    Status(1, "Новая"),
+                    Status(2, "Переоткрытая"),
+                    Status(3, "Выполняется"),
+                    Status(4, "На обзоре"),
+                    Status(5, "Закрыта")
                 ),
                 workingHoursPerDay = 4,
                 workingDaysPerWeek = 5
