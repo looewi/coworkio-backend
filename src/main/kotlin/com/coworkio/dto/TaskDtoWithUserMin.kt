@@ -30,7 +30,7 @@ open class TaskDtoWithUserMin: Serializable {
 
     var description: String? = null
 
-    lateinit var authorId: UserMinDto
+    var authorId: UserMinDto? = null
 
     var assigneeId: UserMinDto? = null
 
@@ -53,7 +53,7 @@ open class TaskDtoWithUserMin: Serializable {
 
     constructor()
 
-    constructor(id: String?, title: String, taskLevel: TaskLevel, taskType: TaskType, subtasks: List<String>?, parentTask: String?, relatedTasks: List<String>?, description: String?, authorId: UserMinDto, assigneeId: UserMinDto?, estimate: Double?, priority: Priority, tags: List<String>?, status: Int, sprintId: String?, projectId: String, dueDate: Date?) {
+    constructor(id: String?, title: String, taskLevel: TaskLevel, taskType: TaskType, subtasks: List<String>?, parentTask: String?, relatedTasks: List<String>?, description: String?, authorId: UserMinDto?, assigneeId: UserMinDto?, estimate: Double?, priority: Priority, tags: List<String>?, status: Int, sprintId: String?, projectId: String, dueDate: Date?) {
         this.id = id
         this.title = title
         this.taskLevel = taskLevel
@@ -74,7 +74,7 @@ open class TaskDtoWithUserMin: Serializable {
     }
 }
 
-fun Task.toTaskWithUserMinDto(author: UserMinDto, assignee: UserMinDto) = TaskDtoWithUserMin(
+fun Task.toTaskWithUserMinDto(author: UserMinDto?, assignee: UserMinDto?) = TaskDtoWithUserMin(
         id = this.id,
         title = this.title,
         taskLevel = this.taskLevel,

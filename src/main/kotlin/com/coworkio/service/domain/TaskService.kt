@@ -19,20 +19,30 @@ open class TaskService {
     @Autowired
     private lateinit var taskDtoMapper: TaskDtoMapper
 
+    private fun getAuthorAndAssignee(authorId: String?, assigneeId: String?): Pair<UserMinDto?, UserMinDto?> {
+        val assignee =
+                if(assigneeId != null)
+                    userRepository.findOne(assigneeId)?.toUserMinDto()
+                else null
+        val author =
+                if(authorId != null)
+                    userRepository.findOne(authorId)?.toUserMinDto()
+                else null
+        return Pair(author, assignee)
+    }
+
     fun getTaskById(id: String): TaskDtoWithUserMin? {
         val task = taskRepository.findOne(id)
-        val assignee = userRepository.findOne(task.assigneeId).toUserMinDto()
-        val author = userRepository.findOne(task.authorId).toUserMinDto()
-        return task?.toTaskWithUserMinDto(author, assignee) ?: null
+        val userInfo = getAuthorAndAssignee(task.authorId, task.assigneeId)
+        return task?.toTaskWithUserMinDto(userInfo.first, userInfo.second) ?: null
     }
 
     fun getAllTasks(projectId: String): List<TaskDtoWithUserMin>
             = taskRepository.findAll()
                 .filter { it.projectId == projectId }
                 .map {
-                    val assignee = userRepository.findOne(it.assigneeId).toUserMinDto()
-                    val author = userRepository.findOne(it.authorId).toUserMinDto()
-                    it.toTaskWithUserMinDto(author, assignee)
+                    val userInfo = getAuthorAndAssignee(it.authorId, it.assigneeId)
+                    it.toTaskWithUserMinDto(userInfo.first, userInfo.second)
                 }
 
     fun saveOrUpdate(taskDto: TaskDto): TaskDto {
