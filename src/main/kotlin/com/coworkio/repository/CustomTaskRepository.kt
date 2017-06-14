@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface CustomTaskRepository {
-    fun  find(title: String?, priority: String?, assignee: String?): List<Task>?
+    fun  find(projectId: String, title: String?, priority: String?, assignee: String?): List<Task>?
 }

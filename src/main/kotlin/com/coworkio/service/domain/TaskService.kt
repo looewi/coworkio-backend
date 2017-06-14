@@ -53,8 +53,8 @@ open class TaskService {
         }
     }
 
-    fun find(title: String?, priority: String?, assignee: String?): List<TaskDto> {
-        return taskRepository.find(title, priority, assignee)?.map {
+    fun find(projectId: String, title: String?, priority: String?, assignee: String?): List<TaskDto> {
+        return taskRepository.find(projectId, title, priority, assignee)?.map {
             taskDtoMapper.toDto(it)
         } ?: emptyList()
     }

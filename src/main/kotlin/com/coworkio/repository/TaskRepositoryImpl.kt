@@ -19,14 +19,17 @@ open class TaskRepositoryImpl: CustomTaskRepository {
     @Autowired
     private lateinit var mongoTemplate: MongoTemplate
 
-    override fun find(title: String?, priority: String?, assignee: String?): List<Task>? {
+    override fun find(projectId: String, title: String?, priority: String?, assignee: String?): List<Task>? {
         val criterias = mutableListOf<Criteria>()
         if(title != null) criterias += Criteria.where("firstName").`is`(title)
         if(priority != null) criterias += Criteria.where("priority").`is`(priority)
         if(assignee != null) criterias += Criteria.where("assigneeId").`is`(assignee)
 
         return mongoTemplate.find(
-                Query.query(criterias.fold(Criteria(), { left, right -> left.andOperator(right)})),
+                Query.query(criterias.fold(
+                        Criteria.where("projectId").`is`(projectId),
+                        { left, right -> left.andOperator(right)})
+                ),
                 Task::class.java
         )
     }
