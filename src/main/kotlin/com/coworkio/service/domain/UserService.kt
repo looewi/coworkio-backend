@@ -75,4 +75,8 @@ open class UserService {
                         endDate = null
                 ), userEmail)
     }
+
+    fun find(firstName: String?, lastName: String?, university: String?, faculty: String?): List<User>? {
+        return userRepository.findUsers(firstName, lastName, university, faculty)
+    }
 }

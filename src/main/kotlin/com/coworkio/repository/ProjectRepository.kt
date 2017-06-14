@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ProjectRepository: MongoRepository<Project, String>, CustomProjectRepository {
+
+    fun findByTitleStartingWith(title: String): List<Project>?
 }

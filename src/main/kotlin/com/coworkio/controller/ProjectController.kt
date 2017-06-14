@@ -48,4 +48,9 @@ open class ProjectController {
     fun getProjectById(@PathVariable id: String): Project?
             = projectService.getProjectById(id)
 
+    @RequestMapping(value = "/find", method = arrayOf(RequestMethod.GET))
+    fun findProjects(@PathVariable title: String): List<Project> {
+        return projectService.findByTitle(title) ?: emptyList()
+    }
+
 }

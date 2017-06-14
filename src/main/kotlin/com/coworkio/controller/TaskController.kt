@@ -51,4 +51,10 @@ open class TaskController {
     fun getTaskById(@PathVariable id: String)
             = taskService.getTaskById(id)
 
+    @RequestMapping(value = "/find", method = arrayOf(RequestMethod.GET))
+    fun getTaskById(@PathVariable title: String?, @PathVariable priority: String?,
+                    @PathVariable status: String?, @PathVariable assignee: String?)
+            = taskService.find(title, priority, assignee)
+
+
 }

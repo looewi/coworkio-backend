@@ -5,6 +5,7 @@ import com.coworkio.dto.DashboardProjectDto
 import com.coworkio.dto.ProjectMinifiedVersionDto
 import com.coworkio.dto.UserProfileDto
 import com.coworkio.entity.domain.Project
+import com.coworkio.entity.domain.User
 import com.coworkio.entity.domain.UserProject
 import com.coworkio.service.domain.ProjectService
 import com.coworkio.service.domain.UserService
@@ -76,6 +77,12 @@ open class UserController {
                 DashboardProjectDto(projectService.getProjectById(it.projectId)!!, it.isCurrent)
             }
         }
+    }
+
+    @RequestMapping(value = "/find", method = arrayOf(RequestMethod.GET))
+    fun findUser(@PathVariable firstName: String?, @PathVariable lastName: String?,
+                 @PathVariable university: String?, @PathVariable faculty: String?): List<User> {
+        return userService.find(firstName, lastName, university, faculty) ?: emptyList()
     }
 
 }

@@ -22,4 +22,19 @@ open class UserRepositoryImpl: CustomUserRepository {
                 User::class.java
         )
     }
+
+    override fun findUsers(firstName: String?, lastName: String?, university: String?, faculty: String?): List<User>? {
+        val criterias = mutableListOf<Criteria>()
+        if(firstName != null) criterias += Criteria.where("firstName").`is`(firstName)
+        if(lastName != null) criterias += Criteria.where("lastName").`is`(lastName)
+        if(university != null) criterias += Criteria.where("university.university").`is`(university)
+        if(faculty != null) criterias += Criteria.where("university.faculty").`is`(faculty)
+
+        return mongoTemplate.find(
+                Query.query(criterias.fold(Criteria(), {left, right -> left.andOperator(right)})),
+                User::class.java
+        )
+
+    }
+
 }

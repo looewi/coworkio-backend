@@ -97,4 +97,8 @@ open class ProjectService {
             } else {
                 null
             }
+
+    fun findByTitle(title: String): List<Project>? {
+        return projectRepository.findByTitleStartingWith(title)
+    }
 }
