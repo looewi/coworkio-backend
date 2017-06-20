@@ -99,6 +99,6 @@ open class ProjectService {
             }
 
     fun findByTitle(title: String): List<Project>? {
-        return projectRepository.findByTitleStartingWith(title)
+        return projectRepository.findProjectByTitle(title)
     }
 }

@@ -48,5 +48,8 @@ open class ProjectRepositoryImpl: CustomProjectRepository {
                 Project::class.java
             )
 
+    override fun findProjectByTitle(title: String): List<Project>?
+            = mongoTemplate.find(Query.query(Criteria.where("title").regex(".*$title.*")), Project::class.java)
+
 
 }

@@ -10,4 +10,5 @@ interface CustomProjectRepository {
     fun addPosition(projectId: String, position: Position): String?
     fun updatePosition(projectId: String, position: Position)
     fun getProjectsByIds(projectIds: List<String>): List<Project>
+    fun findProjectByTitle(title: String): List<Project>?
 }
