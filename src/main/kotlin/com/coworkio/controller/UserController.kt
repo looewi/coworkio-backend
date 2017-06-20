@@ -80,8 +80,8 @@ open class UserController {
     }
 
     @RequestMapping(value = "/find", method = arrayOf(RequestMethod.GET))
-    fun findUser(@PathVariable firstName: String?, @PathVariable lastName: String?,
-                 @PathVariable university: String?, @PathVariable faculty: String?): List<User> {
+    fun findUser(@RequestParam firstName: String?, @RequestParam lastName: String?,
+                 @RequestParam university: String?, @RequestParam faculty: String?): List<User> {
         return userService.find(firstName, lastName, university, faculty) ?: emptyList()
     }
 

@@ -1,8 +1,6 @@
 package com.coworkio.repository
 
-import com.coworkio.entity.domain.Status
 import com.coworkio.entity.domain.Task
-import com.coworkio.entity.domain.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -26,10 +24,7 @@ open class TaskRepositoryImpl: CustomTaskRepository {
         if(assignee != null) criterias += Criteria.where("assigneeId").`is`(assignee)
 
         return mongoTemplate.find(
-                Query.query(criterias.fold(
-                        Criteria.where("projectId").`is`(projectId),
-                        { left, right -> left.andOperator(right)})
-                ),
+                Query.query(Criteria.where("projectId").`is`(projectId).andOperator(*criterias.toTypedArray())),
                 Task::class.java
         )
     }

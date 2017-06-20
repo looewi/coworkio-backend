@@ -31,7 +31,7 @@ open class UserRepositoryImpl: CustomUserRepository {
         if(faculty != null) criterias += Criteria.where("university.faculty").`is`(faculty)
 
         return mongoTemplate.find(
-                Query.query(criterias.fold(Criteria(), {left, right -> left.andOperator(right)})),
+                Query.query(Criteria().andOperator(*criterias.toTypedArray())),
                 User::class.java
         )
 
